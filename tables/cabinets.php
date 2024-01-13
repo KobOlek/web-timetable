@@ -1,0 +1,102 @@
+<form action="" method="post" class="edit-form">
+    <?php
+        if(isset($_GET["edit"])){
+            $sql_request = "SELECT cab_name, cab_num FROM cabinets WHERE cab_id =".$_GET["edit"];
+            $sql_result_array = mysqli_query($GLOBALS['link'], $sql_request);
+            list($name, $room_num) = mysqli_fetch_array($sql_result_array);
+        }
+        else{
+            $name = $room_num = null;
+        }
+        echo "<input name='name_input' type='text' placeholder='Room name' style='margin: 10px 10px 0 0;' value='$name' >";
+        echo "<input name='room_number' type='number' placeholder='Room number' style='margin 10px 10px 0 0;' value='$room_num'>";
+        echo "<br />";
+        if(isset($_GET["edit"]))
+            echo '<input name="edit_button" class="form-button" type="submit" value="Edit" />';
+        else
+            echo '<input name="submit_button" class="form-button" type="submit" value="Insert" />';
+    ?>
+</form>
+
+<?php
+    $sql_request = "SELECT * FROM cabinets";
+    $result_array = mysqli_query($GLOBALS['link'], $sql_request);
+?>
+<div>
+    <table border='1'>
+        <tr>
+            <th>Edit</th>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Number</th>
+        </tr>
+        <?php
+            while($cabinetsArray = mysqli_fetch_array($result_array)){
+                echo "
+                <tr>
+                    <td>
+                        <a href=".$_SERVER["PHP_SELF"]."?tb=4&edit=".$cabinetsArray["cab_id"].">edit</a> 
+                    </td>
+                    <td>".$cabinetsArray["cab_id"]."</td><td>".$cabinetsArray["cab_name"]."</td>
+                    <td>".$cabinetsArray["cab_num"]."</td>";
+                echo "</tr>";
+            }
+        ?>
+    </table>
+</div>
+<?php
+    function updateData($name, $number, $id){
+        $sql_request = "UPDATE cabinets SET cab_name = '".$name."', cab_num = '".$number."' WHERE cab_id = '".$id."'";
+        echo $sql_insert;
+        $result = mysqli_query($GLOBALS["link"], $sql_request);
+
+        if(!$result){
+            echo mysqli_error($GLOBALS["link"]);
+        }
+    }
+
+    function insertData($name, $number){
+        $table_columns = "
+            cab_name,
+            cab_num
+        ";
+        $insert_values = "'".$name."', '".$number."'";
+        $sql_insert = "INSERT INTO cabinets(".$table_columns.") VALUES (".$insert_values.")";
+        $result = mysqli_query($GLOBALS['link'], $sql_insert);
+        
+        if(!$result){
+            echo mysqli_error($GLOBALS["link"]);
+        }
+    }
+
+    function redirectTo($url){
+        header("Location: ".$url);
+        die();
+    }
+
+    if(isset($_POST["edit_button"])){
+        if(isset($_POST["name_input"]) && isset($_POST["room_number"])){
+            $name_ = $_POST["name_input"];
+            $room_num_ = $_POST["room_number"];
+
+            if($name_ != " " && $room_num_ != " "){
+                $name = $name_;
+                $room_num = $room_num_; 
+                updateData($name_, $room_num_, $_GET["edit"]);
+                
+                redirectTo("admin.php?tb=".$_GET["tb"]);
+            }
+            
+        }
+    }
+    if(isset($_POST["submit_button"])){
+        if(isset($_POST["name_input"]) && isset($_POST["room_number"])){
+            $name = $_POST["name_input"];
+            $room_num = $_POST["room_number"];
+            if($name != " " && $room_num != " "){
+                insertData($name, $room_num);
+                redirectTo("admin.php?tb=".$_GET["tb"]);
+            }
+        }
+    }
+?>
