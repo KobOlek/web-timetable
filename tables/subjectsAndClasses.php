@@ -1,27 +1,30 @@
 <?php
     if(isset($_GET["class"])){
-        $sql_request = "SELECT c_name FROM classes WHERE c_id =".$_GET["class"];
-        $sql_result_array = mysqli_query($GLOBALS['link'], $sql_request);
-        list($class_name) = mysqli_fetch_array($sql_result_array);
+        list($class_name) = mysqli_fetch_array(selectData("c_name", "classes", "WHERE c_id = ".$_GET["class"])[0]);
         echo $class_name;
+    }
+
+    function selectData($column, $table_name, $condition=""){
+        $sql_request = "SELECT ".$column." FROM ".$table_name." ".$condition;
+        $sql_result_array = mysqli_query($GLOBALS['link'], $sql_request);
+        return [$sql_result_array, $sql_request];
     }
 ?>
 
 <form method="post">
-    <input class="form-button" name="save_button" type="submit" value="Save">
-    <br>
     <?php
+        if(isset($_GET["class"])){
+            echo '<input class="form-button" name="save_button" type="submit" value="Save"><br>';
+            echo "<table style='margin: 0 auto;' border='1'>
+                <tr>    
+                    <th>#</th>
+                    <th>Назва предмету</th>
+                    <th>Години</th>
+                </tr>
+            ";
+            $select_data = selectData("s_id, s_name", "subjects", "ORDER BY s_name");
 
-        $sql_request = "SELECT s_id, s_name FROM subjects ORDER BY s_name";
-        $sql_result_array = mysqli_query($GLOBALS['link'], $sql_request);
-        echo "<table style='margin: 0 auto;' border='1'>
-            <tr>    
-                <th>#</th>
-                <th>Назва предмету</th>
-                <th>Години</th>
-            </tr>
-        ";
-            while($subjectArray = mysqli_fetch_array($sql_result_array)){
+            while($subjectArray = mysqli_fetch_array($select_data[0])){
                 echo "<tr><td>";
                 echo "<input type='checkbox' name='subject_".$subjectArray["s_id"]."' value='".$subjectArray["s_id"]."'>";
                 echo "</td>";
@@ -34,7 +37,8 @@
                     <input type='number' placeholder='Години' name='hours_".$subjectArray["s_id"]."'>";
                 echo "</td>";
             }
-        echo "</table>";
+            echo "</table>";
+        }
     ?>
 </form>
 
