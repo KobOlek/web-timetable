@@ -36,15 +36,19 @@
                 <a href="?tb=6">Вчителі та предмети</a>
             </th>
             <th>
-                <a href="?tb=7">Розклад</a>
+                <a href="?tb=7">Фах вчителів</a>
+            </th>
+            <th>
+                <a href="?tb=8">Розклад</a>
             </th>
         </tr>
         <tr>
-            <td colspan="8" style="text-align: center;">
+            <td colspan="9" style="text-align: center;">
                 <?php
                     $tablesPaths = [
                         "tables/teachers.php", "tables/subjects.php", "tables/classes.php", "tables/cabinets.php",
-                        "tables/subjectsAndClasses.php", "tables/teachersAndClasses.php", "tables/timetable.php"
+                        "tables/subjectsAndClasses.php", "tables/teachersAndClasses.php", "tables/teachersProfession.php",
+                        "tables/timetable.php"
                     ];
                     for ($i=0; $i < count($tablesPaths); $i++) {
                         if(isset($_GET["tb"])){

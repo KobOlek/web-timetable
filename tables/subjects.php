@@ -44,8 +44,8 @@
 </table>
 </div>
 <?php
-    function updateData($name, $id){
-        $sql_request = "UPDATE subjects SET s_name = '".$name." WHERE s_id = '".$id."'";
+    function updateData($name, $comment, $id){
+        $sql_request = "UPDATE subjects SET s_name = '".$name."', s_comment ='".$comment."' WHERE s_id = '".$id."'";
         $result = mysqli_query($GLOBALS["link"], $sql_request);
 
         if(!$result){
