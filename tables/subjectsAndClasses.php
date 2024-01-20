@@ -83,7 +83,18 @@
         }
     }
 
+    function deleteData($table_name, $condition){
+        $sql_request = "DELETE FROM ".$table_name." ".$condition;
+        $result = mysqli_query($GLOBALS["link"], $sql_request);
+
+        if(!$result){
+            echo mysqli_error($GLOBALS["link"]);
+        }
+    }
+
     if(isset($_POST["save_button"])){
+        deleteData("subjectsandclasses", "WHERE c_id = ".$_GET["class"]);
+
         $sql_request = "SELECT s_id, s_name FROM subjects ORDER BY s_name";
         $sql_result_array = mysqli_query($GLOBALS['link'], $sql_request);
        

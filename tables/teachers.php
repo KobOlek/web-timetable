@@ -29,6 +29,7 @@
             <th>Id</th>
             <th>Fullname</th>
             <th>Contacts</th>
+            <th>Change disciplines</th>
         </tr>
         <?php
             while($teachersArray = mysqli_fetch_array($result_array)){
@@ -37,7 +38,10 @@
                     <td>
                         <a href=".$_SERVER["PHP_SELF"]."?tb=1&edit=".$teachersArray["t_id"].">edit</a> 
                     </td>
-                    <td>".$teachersArray["t_id"]."</td><td>".$teachersArray["t_fullname"]."</td><td>".$teachersArray["t_email"]."</td>";
+                    <td>".$teachersArray["t_id"]."</td><td>".$teachersArray["t_fullname"]."</td><td>".$teachersArray["t_email"]."</td>
+                    <td>
+                        <a href=".$_SERVER["PHP_SELF"]."?tb=7&t_id=".$teachersArray["t_id"].">Change discipline</a>
+                    </td>";
                 echo "</tr>";
             }
         ?>

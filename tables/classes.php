@@ -28,6 +28,7 @@
             <th>Id</th>
             <th>Name</th>
             <th>Subjects</th>
+            <th>Teachers</th>
         </tr>
         <?php
             while($subjectsArray = mysqli_fetch_array($result_array)){
@@ -40,7 +41,11 @@
                 echo "
                 <td>
                     <a href=".$_SERVER["PHP_SELF"]."?tb=5&class=".$subjectsArray["c_id"].">Змінити предмети</a>
-                </td>";
+                </td>
+                <td>
+                    <a href=".$_SERVER["PHP_SELF"]."?tb=6&class=".$subjectsArray["c_id"].">Перепризначити вчителя</a>
+                </td>
+                ";
                 echo "</tr>";
             }
         ?>
