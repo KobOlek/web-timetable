@@ -13,14 +13,16 @@
 
     function insertData($table_name, $table_columns, $insert_values){
         $sql_insert = "INSERT INTO ".$table_name."(".$table_columns.") VALUES (".$insert_values.")";
-        echo $sql_insert;
         $result = mysqli_query($GLOBALS['link'], $sql_insert);
     }
 
-    function updateData($subject_id, $class_id, $hours, $id){
+    function updateData($table_name, $table_columns, $insert_values, $condition){
+        $set_string = "";
+        for ($i=0; $i < count($table_columns); $i++) { 
+            $set_string .= $table_columns[$i]." = ".$insert_values[$i];
+        }
         $sql_request = 
-        "UPDATE subjectsandclasses SET s_id = ".$subject_id.", c_id = ".$class_id.", sc_hours_count = ".$hours." WHERE sc_id = '".$id."'";
-        echo $sql_request;
+        "UPDATE ".$table_name." SET ".$set_string." ".$condition;
         $result = mysqli_query($GLOBALS["link"], $sql_request);
 
         if(!$result){
