@@ -60,7 +60,8 @@
         while($subjectArray = mysqli_fetch_array($sql_result_array)){
             if(isset($_POST["subject_".$subjectArray['s_id']]) && isset($_POST["hours_".$subjectArray['s_id']])) {
                 if($_POST["hours_".$subjectArray['s_id']] > 0){
-                    insertData($subjectArray["s_id"], $_POST["hours_".$subjectArray['s_id']]);
+                    insertData("subjectsandclasses",
+                    "c_id, s_id, sc_hours_count", $_GET["class"].", ".$subjectArray["s_id"].", ".$_POST["hours_".$subjectArray['s_id']]);
                 }
             }
         }

@@ -5,8 +5,8 @@
 <form action="" method="post" class="edit-form">
     <?php
         if(isset($_GET["edit"])){
-            list($name) = mysqli_fecth_array(
-                selectData("c_name", "classes", "WHERE c_id =".$_GET['edit'])
+            list($name) = mysqli_fetch_array(
+                selectData("c_name", "classes", "WHERE c_id = ".$_GET['edit'])[0]
             );
         }
         else{
@@ -32,6 +32,7 @@
             <th>Name</th>
             <th>Subjects</th>
             <th>Teachers</th>
+            <th>Timetable</th>
         </tr>
         <?php
             while($subjectsArray = mysqli_fetch_array($result_array)){
@@ -47,6 +48,9 @@
                 </td>
                 <td>
                     <a href=".$_SERVER["PHP_SELF"]."?tb=6&class=".$subjectsArray["c_id"].">Перепризначити вчителя</a>
+                </td>
+                <td>
+                    <a href=".$_SERVER["PHP_SELF"]."?tb=8&cl=".$subjectsArray["c_id"].">Сформувати розклад</a>
                 </td>
                 ";
                 echo "</tr>";
