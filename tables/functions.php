@@ -2,6 +2,7 @@
 <?php
     function selectData($column, $table_name, $condition=""){
         $sql_request = "SELECT ".$column." FROM ".$table_name." ".$condition;
+        //echo $sql_request;
         $sql_result_array = mysqli_query($GLOBALS['link'], $sql_request);
         return [$sql_result_array, $sql_request];
     }
