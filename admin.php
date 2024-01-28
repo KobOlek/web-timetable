@@ -9,6 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin</title>
     <link rel="stylesheet" href="styles/style.css">
+    <script src="js/script.js"></script>
 </head>
 <body>
     <table border="1" width="100%">

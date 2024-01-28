@@ -52,7 +52,7 @@
        
         while($subjectArray = mysqli_fetch_array($select_data[0])){
             if(isset($_POST["profession_".$subjectArray['s_id']])) {
-                insertData($subjectArray["s_id"]);
+                insertData("teachersprofession", "tp_id_teach, tp_id_subject", $_GET["t_id"].", ".$subjectArray["s_id"]);
             }
         }
         redirectTo("admin.php?tb=".$_GET["tb"]."&t_id=".$_GET["t_id"]);      
