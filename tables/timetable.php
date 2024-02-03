@@ -26,15 +26,48 @@
                         <th><abbr title='Постійний урок'>Постійний</abbr></th>
                         <th>Урок</th>
                     </tr>";
-                for($num=1; $num < 9; $num++){
+                // $data = selectData("day_id, tt_chys_znam, sc_id", 
+                // "timetable", "WHERE tt_chys_znam = 1 AND sc_id = ".$_GET["cl"]." AND day_id = ".$_GET["day"])[0];
+                    
+                for($num=1; $num < 9; $num++){   
+
+                    $data = selectData("tt_num_lesson, tt_chys_znam, tt_permanent, tt_subject_id", 
+                    "timetable", "WHERE tt_chys_znam != 2 AND tt_num_lesson = $num AND 
+                    tt_class_id = ".$_GET["cl"]." AND tt_day_id = ".$_GET["day"])[0];
+                    list($num_lesson, $tt_chys, $permanent, $subject_id) = 
+                    mysqli_fetch_array($data);
+                    
+                    echo $num_lesson.", ".$tt_chys.", ".$permanent." ,".$subject_id."<br>";
+                
+                    $data = selectData("tt_num_lesson, tt_chys_znam, tt_permanent, tt_subject_id", 
+                    "timetable", "WHERE tt_chys_znam = 2 AND tt_num_lesson = $num AND 
+                    tt_class_id = ".$_GET["cl"]." AND tt_day_id = ".$_GET["day"])[0];
+                    list($num_lesson, $tt_znam, $permanent, $subject_id) = 
+                    mysqli_fetch_array($data);
+                    echo $num_lesson.", ".$tt_znam.", ".$permanent." ,".$subject_id."<br>";
+                    
                     echo "<tr><td >".$num."</td>";
                     echo "<td>
-                    <input type='checkbox' name='chyselnyk_$num' value='".$num."_1'>
+                    <input type='checkbox' id='chyselnyk_$num' name='chyselnyk_$num' value='".$num."_1'>
                     <br>
-                    <input type='checkbox' name='znamennyk_$num' value='".$num."_2'></td>";
-                    echo "<td><input type='checkbox' name='permanent_$num' value='".$num."_0'></td>";
+                    <input type='checkbox' id='znamennyk_$num' name='znamennyk_$num' value='".$num."_2'></td>";
+                    echo "<td><input";?>
+                    onclick="setPermanent(
+                        document.getElementById('<?php echo "permanent_$num" ?>'),
+                        document.getElementById('<?php echo "znamennyk_$num"; ?>'),
+                        document.getElementById('<?php echo "chyselnyk_$num"; ?>'),
+                        document.getElementById('<?php echo "subject_znamennyk_".$num."_2"; ?>'),
+                        document.getElementById('<?php echo "subject_chyselnyk_".$num."_1"; ?>'));"
                     
-                    echo "<td><select name='subject_chyselnyk_".$num."_1'>
+                    <?php
+                        echo "type='checkbox' id='permanent_$num' name='permanent_$num' value='".$num."_0'></td>";
+                    
+                    echo "<td><select" ; ?>
+                    onclick="setChysZnam(
+                        document.getElementById('<?php echo "chyselnyk_$num"; ?>'),
+                        document.getElementById('<?php echo "subject_chyselnyk_".$num."_1"; ?>'));"
+                    <?php 
+                        echo "id='subject_chyselnyk_".$num."_1' name='subject_chyselnyk_".$num."_1'>
                         <option value='-'>Не обрано</option>";
                     $subjects = selectData(
                         "sc.s_id, s.s_name, sc.sc_hours_count", "subjectsandclasses sc, subjects s", "WHERE sc.s_id = s.s_id AND sc.c_id = ".$_GET["cl"]
@@ -43,8 +76,13 @@
                         echo "<option value='".$sub["s_id"]."'>".$sub["s_name"]."(".$sub["sc_hours_count"].")</option>";
                     }
                     echo "</select>";
-    
-                    echo "<br><select name='subject_znamennyk_".$num."_2'> 
+                    echo "<br><select"; ?>
+                        onclick="setChysZnam(
+                            document.getElementById('<?php echo "znamennyk_$num"; ?>'),
+                            document.getElementById('<?php echo "subject_znamennyk_".$num."_2"; ?>'));"
+                    <?php
+
+                        echo "id='subject_znamennyk_".$num."_2' name='subject_znamennyk_".$num."_2'> 
                         <option value='-'>Не обрано</option>";
                     $subjects = selectData(
                         "sc.s_id, s.s_name, sc.sc_hours_count", "subjectsandclasses sc, subjects s", "WHERE sc.s_id = s.s_id AND sc.c_id = ".$_GET["cl"]
@@ -59,27 +97,48 @@
                 echo "</table>";  
                 
                 if(isset($_POST["save_button"])){
-                    $k=0;
+                    $k_1=0;
+                    deleteData("timetable", "WHERE tt_class_id = ".$_GET["cl"]." AND tt_day_id = ".$_GET["day"]);
                     for($num=1; $num < 9; $num++){
                         if(isset($_POST["chyselnyk_".$num])){
-                            echo $_POST["chyselnyk_".$num];
-                            $k=1;
+                            //echo $_POST["chyselnyk_".$num];
+                            $k_1=1;
                         }
                         if(isset($_POST["znamennyk_".$num])){
-                            echo $_POST["znamennyk_".$num];
-                            $k=1;
+                            //echo $_POST["znamennyk_".$num];
+                            //$k=1;
                         }
-                        if(isset($_POST["permanent_".$num]) && $k == 0){
-                            echo $_POST["permanent_".$num];
+                        if(isset($_POST["permanent_".$num]) && $k_1 != 0){
+                           // echo $_POST["permanent_".$num];
+                           if($_POST["permanent_".$num] != "-"){
+                                echo $_POST["subject_chyselnyk_".$num."_1"];
+                                insertData("timetable", 
+                                "tt_day_id, tt_num_lesson, tt_chys_znam, 
+                                tt_permanent, tt_subject_id, tt_class_id",
+                                $_GET["day"].", $num, 
+                                0, 1, ".$_POST["subject_chyselnyk_".$num."_1"].", ".$_GET["cl"]);
+                            }
+
                         }
-                        if(isset($_POST["subject_chyselnyk_".$num."_1"])){
+                        if(isset($_POST["subject_chyselnyk_".$num."_1"]) && isset($_POST["chyselnyk_".$num])){
                             if($_POST["subject_chyselnyk_".$num."_1"] != "-"){
                                 echo $_POST["subject_chyselnyk_".$num."_1"];
-                                insertData("timetable", "day_id, s_id, tt_chys_znam, sc_id", $_GET["day"].", ". $_POST["subject_chyselnyk_".$num."_1"]);
+                                insertData("timetable", 
+                                "tt_day_id, tt_num_lesson, tt_chys_znam, 
+                                tt_permanent, tt_subject_id, tt_class_id",
+                                $_GET["day"].", $num, 
+                                1, 0, ".$_POST["subject_chyselnyk_".$num."_1"].", ".$_GET["cl"]);
                             }
                         }
-                        if(isset($_POST["subject_znamennyk_".$num."_2"])){
-                            echo $_POST["subject_znamennyk_".$num."_2"];
+                        if(isset($_POST["subject_znamennyk_".$num."_2"]) && isset($_POST["znamennyk_".$num])){
+                            if($_POST["subject_znamennyk_".$num."_2"] != "-"){
+                                echo $_POST["subject_znamennyk_".$num."_2"];
+                                insertData("timetable", 
+                                "tt_day_id, tt_num_lesson, tt_chys_znam, 
+                                tt_permanent, tt_subject_id, tt_class_id",
+                                $_GET["day"].", $num, 
+                                2, 0, ".$_POST["subject_znamennyk_".$num."_2"].", ".$_GET["cl"]);
+                            }
                         }
                     }
                 }
