@@ -14,7 +14,7 @@
 
     function insertData($table_name, $table_columns, $insert_values){
         $sql_insert = "INSERT INTO ".$table_name."(".$table_columns.") VALUES (".$insert_values.")";
-        echo $sql_insert."<br>";
+        //echo $sql_insert."<br>";
         $result = mysqli_query($GLOBALS['link'], $sql_insert);
     }
 
