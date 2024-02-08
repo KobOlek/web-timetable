@@ -1,9 +1,10 @@
-function setChysZnam(chbox, sel){
+function setChysZnam(chbox, sel, permanent_checkbox){
     if(sel.value == "-"){
-        chbox.checked = false;
-        return;   
+        chbox.checked = false; 
     }
-    chbox.checked = true;
+    else if(chbox.disabled == false)
+        chbox.checked = true;
+    permanent_checkbox.disabled = chbox.checked;
 }
 
 function setPermanent(permanentCheckbox, znamennyk_checkbox, chyselnyk_checkbox, znamennyk_select, chyselnyk_select){
@@ -15,4 +16,9 @@ function setPermanent(permanentCheckbox, znamennyk_checkbox, chyselnyk_checkbox,
     znamennyk_checkbox.disabled = permanentCheckbox.checked;
     chyselnyk_checkbox.disabled = permanentCheckbox.checked;
     znamennyk_select.disabled = permanentCheckbox.checked;
+}
+
+function turnOffPermanent(chys_znam_checkbox, permanent_checkbox){
+    permanent_checkbox.disabled = chys_znam_checkbox.checked;
+    console.log("HI");
 }
