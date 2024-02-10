@@ -5,6 +5,22 @@
         list($class_name) = mysqli_fetch_array(selectData("c_name", "classes", "WHERE c_id = ".$_GET["class"])[0]);
         echo $class_name;
     }
+    
+    if(isset($_POST["save_button"])){
+        deleteData("subjectsandclasses", "WHERE c_id = ".$_GET["class"]);
+
+        $sql_request = "SELECT s_id, s_name FROM subjects ORDER BY s_name";
+        $sql_result_array = mysqli_query($GLOBALS['link'], $sql_request);
+       
+        while($subjectArray = mysqli_fetch_array($sql_result_array)){
+            if(isset($_POST["subject_".$subjectArray['s_id']]) && isset($_POST["hours_".$subjectArray['s_id']])) {
+                if($_POST["hours_".$subjectArray['s_id']] > 0){
+                    insertData("subjectsandclasses",
+                    "c_id, s_id, sc_hours_count", $_GET["class"].", ".$subjectArray["s_id"].", ".$_POST["hours_".$subjectArray['s_id']]);
+                }
+            }
+        }   
+    }
 ?>
 
 <form method="post">
@@ -49,22 +65,3 @@
         }
     ?>
 </form>
-
-<?php
-    if(isset($_POST["save_button"])){
-        deleteData("subjectsandclasses", "WHERE c_id = ".$_GET["class"]);
-
-        $sql_request = "SELECT s_id, s_name FROM subjects ORDER BY s_name";
-        $sql_result_array = mysqli_query($GLOBALS['link'], $sql_request);
-       
-        while($subjectArray = mysqli_fetch_array($sql_result_array)){
-            if(isset($_POST["subject_".$subjectArray['s_id']]) && isset($_POST["hours_".$subjectArray['s_id']])) {
-                if($_POST["hours_".$subjectArray['s_id']] > 0){
-                    insertData("subjectsandclasses",
-                    "c_id, s_id, sc_hours_count", $_GET["class"].", ".$subjectArray["s_id"].", ".$_POST["hours_".$subjectArray['s_id']]);
-                }
-            }
-        }
-        redirectTo("admin.php?tb=".$_GET["tb"]."&class=".$_GET["class"]);      
-    }
-?>

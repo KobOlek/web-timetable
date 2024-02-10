@@ -20,5 +20,4 @@ function setPermanent(permanentCheckbox, znamennyk_checkbox, chyselnyk_checkbox,
 
 function turnOffPermanent(chys_znam_checkbox, permanent_checkbox){
     permanent_checkbox.disabled = chys_znam_checkbox.checked;
-    console.log("HI");
 }

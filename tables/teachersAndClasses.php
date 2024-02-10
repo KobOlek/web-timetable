@@ -2,6 +2,20 @@
     <?php
         include("functions.php");
 
+        if(isset($_POST["save_button"])){
+            deleteData("teachersandsubjects", "WHERE c_id = ".$_GET["class"]);
+    
+            $sql_request = "SELECT s_id, s_name FROM subjects ORDER BY s_name";
+            $sql_result_array = mysqli_query($GLOBALS['link'], $sql_request);
+           
+            while($subjectArray = mysqli_fetch_array($sql_result_array)){
+                if(isset($_POST["teachers_".$subjectArray["s_id"]])) {
+                    insertData("teachersandsubjects", "t_id, s_id, c_id", 
+                    $_POST["teachers_".$subjectArray["s_id"]].", ".$subjectArray["s_id"].", ".$_GET["class"]);
+                }
+            }     
+        }
+
         if(isset($_GET["class"])){
             $sql_request = "SELECT c_name FROM classes WHERE c_id = ".$_GET["class"];
             $sql_result_array = mysqli_query($GLOBALS['link'], $sql_request);
@@ -19,7 +33,7 @@
 
             while($subjectsAndClassestArray = mysqli_fetch_array($select_data[0])){
                 echo "<tr>";
-                //echo"<td>";
+                // echo"<td>";
                 // echo "<input type='checkbox' name='profession_".$subjectsAndClassestArray["s_id"]."' 
                 // value='".$subjectsAndClassestArray["s_id"]."'".$is_checked.">";
                 // echo "</td>";
@@ -53,20 +67,3 @@
         }
     ?>
 </form>
-
-<?php
-    if(isset($_POST["save_button"])){
-        deleteData("teachersandsubjects", "WHERE c_id = ".$_GET["class"]);
-
-        $sql_request = "SELECT s_id, s_name FROM subjects ORDER BY s_name";
-        $sql_result_array = mysqli_query($GLOBALS['link'], $sql_request);
-       
-        while($subjectArray = mysqli_fetch_array($sql_result_array)){
-            if(isset($_POST["teachers_".$subjectArray["s_id"]])) {
-                insertData("teachersandsubjects", "t_id, s_id, c_id", 
-                $_POST["teachers_".$subjectArray["s_id"]].", ".$subjectArray["s_id"].", ".$_GET["class"]);
-            }
-        }
-        redirectTo("admin.php?tb=".$_GET["tb"]."&class=".$_GET["class"]);      
-    }
-?>

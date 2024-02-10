@@ -1,5 +1,13 @@
 <?php
     include("functions.php");
+    if(isset($_POST["submit_button"])){
+        if(isset($_POST["name_input"])){
+            $name = $_POST["name_input"];
+            if($name != " "){
+                insertData("classes", "c_name", "'$name'");
+            }
+        }
+    }
 ?>
 
 <form action="" method="post" class="edit-form">
@@ -70,15 +78,6 @@
                 redirectTo("admin.php?tb=".$_GET["tb"]);
             }
             
-        }
-    }
-    if(isset($_POST["submit_button"])){
-        if(isset($_POST["name_input"])){
-            $name = $_POST["name_input"];
-            if($name != " "){
-                insertData("classes", "c_name", $name);
-                redirectTo("admin.php?tb=".$_GET["tb"]);
-            }
         }
     }
 ?>

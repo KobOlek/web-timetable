@@ -1,5 +1,28 @@
 <?php
     include("functions.php");
+    if(isset($_POST["submit_button"])){
+        if(isset($_POST["name_input"]) && isset($_POST["comment_input"])){
+            $name = $_POST["name_input"];
+            $comment = $_POST["comment_input"];
+            if($name != " " && $comment != " "){
+                insertData("subjects", "s_name, s_comment", "'".$name."', '".$comment."'");
+            }
+        }
+    }
+
+    if(isset($_POST["edit_button"])){
+        if(isset($_POST["name_input"])){
+            $name_ = $_POST["name_input"];
+            $comment_ = $_POST["comment_input"];
+            
+            if($name_ != " " && $comment_ != " "){
+                $name = $name_;
+                $comment = $comment_;
+                updateData("subjects", ["s_name", "s_comment"], ["'".$name_."', ", "'".$comment_."'"],  "WHERE s_id = ".$_GET["edit"]);
+            }
+            
+        }
+    }
 ?>
 
 <form action="" method="post" class="edit-form">
@@ -46,30 +69,3 @@
         ?>
 </table>
 </div>
-<?php
-    if(isset($_POST["edit_button"])){
-        if(isset($_POST["name_input"])){
-            $name_ = $_POST["name_input"];
-            $comment_ = $_POST["comment_input"];
-            
-            if($name_ != " " && $comment_ != " "){
-                $name = $name_;
-                $comment = $comment_;
-                updateData("subjects", ["s_name", "s_comment"], ["'".$name_."'", "'".$comment_."'"],  "WHERE s_id = ".$_GET["edit"]);
-                
-                redirectTo("admin.php?tb=".$_GET["tb"]);
-            }
-            
-        }
-    }
-    if(isset($_POST["submit_button"])){
-        if(isset($_POST["name_input"]) && isset($_POST["comment_input"])){
-            $name = $_POST["name_input"];
-            $comment = $_POST["comment_input"];
-            if($name != " " && $comment != " "){
-                insertData("subjects", "s_name, s_comment", "'".$name."', '".$comment."'");
-                redirectTo("admin.php?tb=".$_GET["tb"]);
-            }
-        }
-    }
-?>

@@ -25,6 +25,7 @@
         }
         $sql_request = 
         "UPDATE ".$table_name." SET ".$set_string." ".$condition;
+        //echo $sql_request;
         $result = mysqli_query($GLOBALS["link"], $sql_request);
 
         if(!$result){

@@ -5,6 +5,17 @@
         list($class_name) = mysqli_fetch_array(selectData("t_fullname", "teachers", "WHERE t_id = ".$_GET["t_id"])[0]);
         echo $class_name;
     }
+
+    if(isset($_POST["save_button"])){
+        deleteData("teachersprofession", "WHERE tp_id_teach = ".$_GET["t_id"]);
+        $select_data = selectData("s_id, s_name", "subjects", "ORDER BY s_name");
+       
+        while($subjectArray = mysqli_fetch_array($select_data[0])){
+            if(isset($_POST["profession_".$subjectArray['s_id']])) {
+                insertData("teachersprofession", "tp_id_teach, tp_id_subject", $_GET["t_id"].", ".$subjectArray["s_id"]);
+            }
+        }
+    }
 ?>
 
 <form method="post">
@@ -44,17 +55,3 @@
         }
     ?>
 </form>
-
-<?php
-    if(isset($_POST["save_button"])){
-        deleteData("teachersprofession", "WHERE tp_id_teach = ".$_GET["t_id"]);
-        $select_data = selectData("s_id, s_name", "subjects", "ORDER BY s_name");
-       
-        while($subjectArray = mysqli_fetch_array($select_data[0])){
-            if(isset($_POST["profession_".$subjectArray['s_id']])) {
-                insertData("teachersprofession", "tp_id_teach, tp_id_subject", $_GET["t_id"].", ".$subjectArray["s_id"]);
-            }
-        }
-        redirectTo("admin.php?tb=".$_GET["tb"]."&t_id=".$_GET["t_id"]);      
-    }
-?>

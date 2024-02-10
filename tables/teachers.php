@@ -1,5 +1,14 @@
 <?php
     include("functions.php");
+    if(isset($_POST["submit_button"])){
+        if(isset($_POST["fullname_input"]) && isset($_POST["contact_input"])){
+            $name = $_POST["fullname_input"];
+            $contact = $_POST["contact_input"];
+            if($name != " " && $contact != " "){
+                insertData("teachers", "t_fullname, t_email", "'".$name."', '".$contact."'");
+            }
+        }
+    }
 ?>
 
 <form action="" method="post" class="edit-form">
@@ -64,16 +73,6 @@
                 redirectTo("admin.php?tb=".$_GET["tb"]);
             }
             
-        }
-    }
-    if(isset($_POST["submit_button"])){
-        if(isset($_POST["fullname_input"]) && isset($_POST["contact_input"])){
-            $name = $_POST["fullname_input"];
-            $contact = $_POST["contact_input"];
-            if($name != " " && $contact != " "){
-                insertData("teachers", "t_fullname, t_email", "'".$name."', '".$contact."'");
-                redirectTo("admin.php?tb=".$_GET["tb"]);
-            }
         }
     }
 ?>
