@@ -20,12 +20,43 @@
                             selectData("t_id", "teachersandsubjects", 
                             "WHERE c_id = ".$_GET["cl"]." AND s_id = ".$_POST["subject_chyselnyk_".$num."_1"])[0]
                         );
+                        //-----------------------------------------------------------------------------------------------------------------
+                        //choosing hours of subject
+                        list($subject_hours) =  mysqli_fetch_array(
+                            selectData(
+                                "sc_hours_count", "subjectsandclasses", 
+                                "WHERE c_id = ".$_GET["cl"]." AND s_id = ".$_POST["subject_chyselnyk_".$num."_1"]
+                            )[0]
+                        );
+                        list($inserted_subject_hours) = mysqli_fetch_array(
+                            selectData(
+                                "COUNT(*)", "timetable",
+                                "WHERE tt_class_id = ".$_GET["cl"]." AND tt_subject_id = ".$_POST["subject_chyselnyk_".$num."_1"]
+                            )[0]
+                        );
 
-                        insertData("timetable", 
-                        "tt_day_id, tt_num_lesson, tt_chys_znam, 
-                        tt_permanent, tt_subject_id, tt_class_id, tt_id_teach",
-                        $_GET["day"].", $num, 
-                        0, 1, ".$_POST["subject_chyselnyk_".$num."_1"].", ".$_GET["cl"].", ".$teacher_id);
+                        list($check_class_id, $check_lesson_number, $check_chys_znam, $check_permanent) = mysqli_fetch_array(
+                            selectData(
+                                "tt_class_id, tt_num_lesson, tt_chys_znam, tt_permanent", "timetable",
+                                "WHERE tt_num_lesson = $num AND tt_chys_znam = 1 AND tt_permanent = 0 AND tt_id_teach = $teacher_id"
+                            )[0]                         
+                        );
+                        //-----------------------------------------------------------------------------------------------------------------
+                        if(mysqli_affected_rows($GLOBALS["link"]) == 0){
+                            //echo $subject_hours."/".$inserted_subject_hours." ";;
+                            if($inserted_subject_hours < $subject_hours){
+                                insertData("timetable", 
+                                    "tt_day_id, tt_num_lesson, tt_chys_znam, 
+                                    tt_permanent, tt_subject_id, tt_class_id, tt_id_teach",
+                                    $_GET["day"].", $num, 
+                                    0, 1, ".$_POST["subject_chyselnyk_".$num."_1"].", ".$_GET["cl"].", ".$teacher_id);
+
+                            }else{
+                                echo "Не знущайтесь над $check_class_id класом! Вони вже мають достатньо цей урок";
+                            }
+                        }else{
+                            echo "Не знущайтесь над людиною! Вона вже має $check_lesson_number урок у <b>$check_class_id</b>";
+                        }
                     }
 
                 }
@@ -38,37 +69,42 @@
                         );
                         //-----------------------------------------------------------------------------------------------------------------
                         //choosing hours of subject
-                        list($k1) =  mysqli_fetch_array(
+                        list($subject_hours) =  mysqli_fetch_array(
                             selectData(
                                 "sc_hours_count", "subjectsandclasses", 
                                 "WHERE c_id = ".$_GET["cl"]." AND s_id = ".$_POST["subject_chyselnyk_".$num."_1"]
                             )[0]
                         );
-                        list($k2) = mysqli_fetch_array(
+                        list($inserted_subject_hours) = mysqli_fetch_array(
                             selectData(
                                 "COUNT(*)", "timetable",
                                 "WHERE tt_class_id = ".$_GET["cl"]." AND tt_subject_id = ".$_POST["subject_chyselnyk_".$num."_1"]
                             )[0]
                         );
+                        //-----------------------------------------------------------------------------------------------------------------
+                       
                         list($check_class_id, $check_lesson_number, $check_chys_znam, $check_permanent) = mysqli_fetch_array(
                             selectData(
                                 "tt_class_id, tt_num_lesson, tt_chys_znam, tt_permanent", "timetable",
-                                "WHERE tt_class_id = ".$_GET["cl"]." AND tt_chys_znam = 1 AND tt_permanent = 0 AND tt_id_teach = $teacher_id"
-                            )[0]
+                                "WHERE tt_num_lesson = $num AND tt_chys_znam = 0 AND tt_permanent = 1 AND tt_id_teach = $teacher_id"
+                            )[0]                         
                         );
-                        
-                        if($check_class_id != 0){
-                            if($k2 <= $k1){
+                            
+                        if(mysqli_affected_rows($GLOBALS["link"]) == 0){
+                            //echo $subject_hours."/".$inserted_subject_hours." ";
+                            if($inserted_subject_hours < $subject_hours){
+                               
                                 insertData("timetable", 
                                     "tt_day_id, tt_num_lesson, tt_chys_znam, 
                                     tt_permanent, tt_subject_id, tt_class_id, tt_id_teach",
                                     $_GET["day"].", $num, 
                                     1, 0, ".$_POST["subject_chyselnyk_".$num."_1"].", ".$_GET["cl"].", ".$teacher_id);
+
                             }else{
                                 echo "Не знущайтесь над $check_class_id класом! Вони вже мають достатньо цей урок";
                             }
                         }else{
-                            echo "Не знущайтесь над людиною! Вона вже має $tt_num_lesson урок у <b>$check_class_id</b>";
+                            echo "Не знущайтесь над людиною! Вона вже має $check_lesson_number урок у <b>$check_class_id</b>";
                         }
                     }
                 }
@@ -79,11 +115,44 @@
                             selectData("t_id", "teachersandsubjects", 
                             "WHERE c_id = ".$_GET["cl"]." AND s_id = ".$_POST["subject_znamennyk_".$num."_2"])[0]
                         );
-                        insertData("timetable", 
-                        "tt_day_id, tt_num_lesson, tt_chys_znam, 
-                        tt_permanent, tt_subject_id, tt_class_id, tt_id_teach",
-                        $_GET["day"].", $num, 
-                        2, 0, ".$_POST["subject_znamennyk_".$num."_2"].", ".$_GET["cl"].", ".$teacher_id);
+
+                        //-----------------------------------------------------------------------------------------------------------------
+                        //choosing hours of subject
+                        list($subject_hours) =  mysqli_fetch_array(
+                            selectData(
+                                "sc_hours_count", "subjectsandclasses", 
+                                "WHERE c_id = ".$_GET["cl"]." AND s_id = ".$_POST["subject_znamennyk_".$num."_2"]
+                            )[0]
+                        );
+                        list($inserted_subject_hours) = mysqli_fetch_array(
+                            selectData(
+                                "COUNT(*)", "timetable",
+                                "WHERE tt_class_id = ".$_GET["cl"]." AND tt_subject_id = ".$_POST["subject_znamennyk_".$num."_2"]
+                            )[0]
+                        );
+
+                        list($check_class_id, $check_lesson_number, $check_chys_znam, $check_permanent) = mysqli_fetch_array(
+                            selectData(
+                                "tt_class_id, tt_num_lesson, tt_chys_znam, tt_permanent", "timetable",
+                                "WHERE tt_num_lesson = $num AND tt_chys_znam = 2 AND tt_permanent = 0 AND tt_id_teach = $teacher_id"
+                            )[0]                         
+                        );
+                        //-----------------------------------------------------------------------------------------------------------------
+                        if(mysqli_affected_rows($GLOBALS["link"]) == 0){
+                            //echo $subject_hours."/".$inserted_subject_hours." ";
+                            if($inserted_subject_hours < $subject_hours){
+                                insertData("timetable", 
+                                    "tt_day_id, tt_num_lesson, tt_chys_znam, 
+                                    tt_permanent, tt_subject_id, tt_class_id, tt_id_teach",
+                                    $_GET["day"].", $num, 
+                                    2, 0, ".$_POST["subject_znamennyk_".$num."_2"].", ".$_GET["cl"].", ".$teacher_id);
+
+                            }else{
+                                echo "Не знущайтесь над $check_class_id класом! Вони вже мають достатньо цей урок";
+                            }
+                        }else{
+                            echo "Не знущайтесь над людиною! Вона вже має $check_lesson_number урок у <b>$check_class_id</b>";
+                        }
                     }
                 }
             }
@@ -123,6 +192,7 @@
                     tt_class_id = ".$_GET["cl"]." AND tt_day_id = ".$_GET["day"])[0];
                     list($num_lesson, $tt_chys, $permanent, $subject_id_chys) = 
                     mysqli_fetch_array($data);
+                    
                     if($tt_chys == 1){
                         $isCheckedChys = "checked";
                     }else
@@ -134,6 +204,30 @@
 
                     }else{
                         $isCheckedPermanent = "";
+                    }
+
+                    if($tt_chys == 1 && $permanent == 0){
+                        echo "<script>
+                        document.addEventListener('DOMContentLoaded', function(){
+                            turnOffPermanent(
+                        document.getElementById('chyselnyk_$num'),
+                        document.getElementById('permanent_$num'), 
+                        )
+                        });";
+                        echo "</script>";
+                    }
+
+                    elseif($tt_chys == 0 && $permanent == 1){
+                        echo "<script>
+                        document.addEventListener('DOMContentLoaded', function(){
+                            setPermanent(
+                                document.getElementById('permanent_$num'),
+                                document.getElementById('znamennyk_$num'),
+                                document.getElementById('chyselnyk_$num'),
+                                document.getElementById('subject_znamennyk_$num"."_2'),
+                                document.getElementById('subject_chyselnyk_$num"."_1'))
+                        });";
+                        echo "</script>";
                     }
 
                     //echo "Lesson number: ".$num_lesson.", Chys/znam: ".$tt_chys.", Permanent: ".$permanent.", Subject id: ".$subject_id_chys."<br>";
@@ -151,11 +245,26 @@
                     }else
                         $isCheckedZnam = "";
 
+                    if($tt_chys == 1 && $permanent == 0){
+                        echo "<script>
+                        document.addEventListener('DOMContentLoaded', function(){
+                            turnOffPermanent(
+                        document.getElementById('chyselnyk_$num'),
+                        document.getElementById('permanent_$num'), 
+                        )
+                        });";
+                        echo "</script>";
+                    }
+
                     //echo "Lesson number: ".$num_lesson.", Chys/znam: ".$tt_znam.", Permanent: ".$permanent.", Subject id: ".$subject_id_znam."<br>";
                     
                     echo "<tr><td >".$num."</td>";
-                    ?>
                     
+                    ?>
+
+                    <script>
+                        
+                    </script>
                     
                     <?php
                     echo "<td>
@@ -189,10 +298,12 @@
                         echo "type='checkbox' id='permanent_$num' name='permanent_$num' value='".$num."_0' $isCheckedPermanent></td>";
                     
                     echo "<td><select" ; ?>
-                    onclick="setChysZnam(
-                        document.getElementById('<?php echo "chyselnyk_$num"; ?>'),
+                    onclick="setSelect(
+                        document.getElementById('<?php echo "permanent_$num"; ?>'),
                         document.getElementById('<?php echo "subject_chyselnyk_".$num."_1"; ?>'),
-                        document.getElementById('<?php echo "permanent_$num"; ?>'));"
+                        [document.getElementById('<?php echo "chyselnyk_$num"; ?>'), 
+                        document.getElementById('<?php echo "znamennyk_$num"; ?>'),
+                        document.getElementById('<?php echo "subject_znamennyk_".$num."_2"; ?>')]);"
                     <?php 
                         echo "id='subject_chyselnyk_".$num."_1' name='subject_chyselnyk_".$num."_1'>
                         <option value='-'>Не обрано</option>";
