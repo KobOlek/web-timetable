@@ -10,8 +10,9 @@
            
             while($subjectArray = mysqli_fetch_array($sql_result_array)){
                 if(isset($_POST["teachers_".$subjectArray["s_id"]])) {
-                    insertData("teachersandsubjects", "t_id, s_id, c_id", 
-                    $_POST["teachers_".$subjectArray["s_id"]].", ".$subjectArray["s_id"].", ".$_GET["class"]);
+                    insertData("teachersandsubjects", "t_id, s_id, c_id, ts_cabinet_id", 
+                    $_POST["teachers_".$subjectArray["s_id"]].", ".$subjectArray["s_id"].", ".$_GET["class"].", 
+                    ".$_POST["cabinets_".$subjectArray["s_id"]]);
                 }
             }     
         }
@@ -27,7 +28,6 @@
                 <tr>    
                     <th>Дисципліни</th>
                     <th>Вчителі</th>
-                    <th>Кабінети</th>
                 </tr>
             ";
             $select_data = selectData("s_id", "subjectsandclasses", "WHERE c_id = ".$_GET["class"]);
@@ -48,6 +48,7 @@
                 echo "<td>";
                 echo "<select name='teachers_".$subjectsAndClassestArray["s_id"]."' form='form'>";
                 
+                //-------------------------------------------------------------------------------------------------------------------
                 $teachersArray = selectData("tp_id_teach", "teachersprofession", "WHERE tp_id_subject = ".$subjectsAndClassestArray["s_id"])[0];
                 while($teachersProfessionsArray = mysqli_fetch_array($teachersArray)){
                     list($teacherName) = mysqli_fetch_array(
@@ -64,25 +65,7 @@
 
                 echo "</select>";
                 echo "</td>";
-                echo "<td>";
-                  echo "<select name='teachers_".$subjectsAndClassestArray["s_id"]."' form='form'>";
-                
-                $teachersArray = selectData("tp_id_teach", "teachersprofession", "WHERE tp_id_subject = ".$subjectsAndClassestArray["s_id"])[0];
-                while($teachersProfessionsArray = mysqli_fetch_array($teachersArray)){
-                    list($teacherName) = mysqli_fetch_array(
-                        selectData("t_fullname", "teachers", "WHERE t_id = ".$teachersProfessionsArray["tp_id_teach"])[0]
-                    ); 
-            
-                    list($teacherId) = mysqli_fetch_array(
-                        selectData("t_id", "teachersandsubjects", 
-                        "WHERE s_id = ".$subjectsAndClassestArray["s_id"]." AND c_id = ".$_GET["class"])[0]
-                    );
-                    $is_selected = ($teacherId == $teachersProfessionsArray['tp_id_teach']) ? ' selected' : '';
-                    echo "<option value=".$teachersProfessionsArray["tp_id_teach"].$is_selected.">".$teacherName."</option>";
-                }
-
-                echo "</select>";
-                echo "</td>";
+                //---------------------------------------------------------------------------------------------------------------------
             }
         }
     ?>

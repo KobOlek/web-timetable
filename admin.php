@@ -29,18 +29,6 @@
             <th>
                 <a href="?tb=4">Кабінети</a>
             </th>
-            <th>
-                <a href="?tb=5">Предмети та класи</a>
-            </th>
-            <th>
-                <a href="?tb=6">Вчителі та предмети</a>
-            </th>
-            <th>
-                <a href="?tb=7">Фах вчителів</a>
-            </th>
-            <th>
-                <a href="?tb=8">Розклад</a>
-            </th>
         </tr>
         <tr>
             <td colspan="9" style="text-align: center;">
