@@ -16,6 +16,7 @@
         $sql_insert = "INSERT INTO ".$table_name."(".$table_columns.") VALUES (".$insert_values.")";
         //echo $sql_insert."<br>";
         $result = mysqli_query($GLOBALS['link'], $sql_insert);
+        return $sql_insert;
     }
 
     function updateData($table_name, $table_columns, $insert_values, $condition){

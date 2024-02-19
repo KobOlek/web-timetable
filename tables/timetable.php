@@ -2,6 +2,56 @@
     <?php
         include("functions.php");
 
+        //-----------------------------------------------------------------------------------------------------------------
+        
+        function getHours($num, $chys_znam_value, $permanent_value){
+            list($teacher_id) = mysqli_fetch_array(
+                selectData("t_id", "teachersandsubjects", 
+                "WHERE c_id = ".$_GET["cl"]." AND s_id = ".$_POST["subject_chyselnyk_".$num."_1"])[0]
+            );
+            echo $teacher_id."<br>".selectData("t_id", "teachersandsubjects", 
+                "WHERE c_id = ".$_GET["cl"]." AND s_id = ".$_POST["subject_chyselnyk_".$num."_1"])[1];
+
+            //choosing hours of subject
+            list($subject_hours) =  mysqli_fetch_array(
+                selectData(
+                    "sc_hours_count", "subjectsandclasses", 
+                    "WHERE c_id = ".$_GET["cl"]." AND s_id = ".$_POST["subject_chyselnyk_".$num."_1"]
+                )[0]
+            );
+            list($inserted_subject_hours) = mysqli_fetch_array(
+                selectData(
+                    "COUNT(*)", "timetable",
+                    "WHERE tt_class_id = ".$_GET["cl"]." AND tt_subject_id = ".$_POST["subject_chyselnyk_".$num."_1"]
+                )[0]
+            );
+
+            list($check_class_id, $check_lesson_number, $check_chys_znam, $check_permanent) = mysqli_fetch_array(
+                selectData(
+                    "tt_class_id, tt_num_lesson, tt_chys_znam, tt_permanent", "timetable",
+                    "WHERE tt_num_lesson = $num AND tt_chys_znam = 1 AND tt_permanent = 0 AND tt_id_teach = $teacher_id"
+                )[0]                         
+            );     
+
+            if(mysqli_affected_rows($GLOBALS["link"]) == 0){
+                //echo $subject_hours."/".$inserted_subject_hours." ";;
+                if($inserted_subject_hours < $subject_hours){
+                    insertData("timetable", 
+                                    "tt_day_id, tt_num_lesson, tt_chys_znam, 
+                                    tt_permanent, tt_subject_id, tt_class_id, tt_id_teach, tt_cabinet_id",
+                                    $_GET["day"].", $num, 
+                                    0, 1, ".$_POST["subject_chyselnyk_".$num."_1"].", ".$_GET["cl"].", 
+                                    ".$teacher_id.", ".$_POST["chys_cabinets_".$num]);
+
+                }else{
+                    echo "Не знущайтесь над $check_class_id класом! Вони вже мають достатньо цей урок";
+                }
+            }else{
+                echo "Не знущайтесь над людиною! Вона вже має $check_lesson_number урок у <b>$check_class_id</b>";
+            }
+        }
+        //-----------------------------------------------------------------------------------------------------------------
+
         if(isset($_POST["save_button"])){
             deleteData("timetable", "WHERE tt_class_id = ".$_GET["cl"]." AND tt_day_id = ".$_GET["day"]);
             for($num=1; $num < 9; $num++){
@@ -16,49 +66,7 @@
                    // echo $_POST["permanent_".$num];
                    if($_POST["permanent_".$num] != "-"){
                         //echo $_POST["subject_chyselnyk_".$num."_1"];
-                        list($teacher_id) = mysqli_fetch_array(
-                            selectData("t_id", "teachersandsubjects", 
-                            "WHERE c_id = ".$_GET["cl"]." AND s_id = ".$_POST["subject_chyselnyk_".$num."_1"])[0]
-                        );
-                        echo $teacher_id."<br>".selectData("t_id", "teachersandsubjects", 
-                            "WHERE c_id = ".$_GET["cl"]." AND s_id = ".$_POST["subject_chyselnyk_".$num."_1"])[1];
-                        //-----------------------------------------------------------------------------------------------------------------
-                        //choosing hours of subject
-                        list($subject_hours) =  mysqli_fetch_array(
-                            selectData(
-                                "sc_hours_count", "subjectsandclasses", 
-                                "WHERE c_id = ".$_GET["cl"]." AND s_id = ".$_POST["subject_chyselnyk_".$num."_1"]
-                            )[0]
-                        );
-                        list($inserted_subject_hours) = mysqli_fetch_array(
-                            selectData(
-                                "COUNT(*)", "timetable",
-                                "WHERE tt_class_id = ".$_GET["cl"]." AND tt_subject_id = ".$_POST["subject_chyselnyk_".$num."_1"]
-                            )[0]
-                        );
-
-                        list($check_class_id, $check_lesson_number, $check_chys_znam, $check_permanent) = mysqli_fetch_array(
-                            selectData(
-                                "tt_class_id, tt_num_lesson, tt_chys_znam, tt_permanent", "timetable",
-                                "WHERE tt_num_lesson = $num AND tt_chys_znam = 1 AND tt_permanent = 0 AND tt_id_teach = $teacher_id"
-                            )[0]                         
-                        );     
-                        //-----------------------------------------------------------------------------------------------------------------
-                        if(mysqli_affected_rows($GLOBALS["link"]) == 0){
-                            //echo $subject_hours."/".$inserted_subject_hours." ";;
-                            if($inserted_subject_hours < $subject_hours){
-                                insertData("timetable", 
-                                    "tt_day_id, tt_num_lesson, tt_chys_znam, 
-                                    tt_permanent, tt_subject_id, tt_class_id, tt_id_teach",
-                                    $_GET["day"].", $num, 
-                                    0, 1, ".$_POST["subject_chyselnyk_".$num."_1"].", ".$_GET["cl"].", ".$teacher_id);
-
-                            }else{
-                                echo "Не знущайтесь над $check_class_id класом! Вони вже мають достатньо цей урок";
-                            }
-                        }else{
-                            echo "Не знущайтесь над людиною! Вона вже має $check_lesson_number урок у <b>$check_class_id</b>";
-                        }
+                        getHours($num, 0, 1);
                     }
 
                 }
@@ -98,9 +106,10 @@
                                
                                 insertData("timetable", 
                                     "tt_day_id, tt_num_lesson, tt_chys_znam, 
-                                    tt_permanent, tt_subject_id, tt_class_id, tt_id_teach",
+                                    tt_permanent, tt_subject_id, tt_class_id, tt_id_teach, tt_cabinet_id",
                                     $_GET["day"].", $num, 
-                                    1, 0, ".$_POST["subject_chyselnyk_".$num."_1"].", ".$_GET["cl"].", ".$teacher_id);
+                                    1, 0, ".$_POST["subject_chyselnyk_".$num."_1"].", ".$_GET["cl"].", 
+                                    ".$teacher_id.", ".$_POST["chys_cabinets_".$num]);
 
                             }else{
                                 echo "Не знущайтесь над $check_class_id класом! Вони вже мають достатньо цей урок";
@@ -145,9 +154,9 @@
                             if($inserted_subject_hours < $subject_hours){
                                 insertData("timetable", 
                                     "tt_day_id, tt_num_lesson, tt_chys_znam, 
-                                    tt_permanent, tt_subject_id, tt_class_id, tt_id_teach",
+                                    tt_permanent, tt_subject_id, tt_class_id, tt_id_teach, tt_cabinet_id",
                                     $_GET["day"].", $num, 
-                                    2, 0, ".$_POST["subject_znamennyk_".$num."_2"].", ".$_GET["cl"].", ".$teacher_id);
+                                    2, 0, ".$_POST["subject_znamennyk_".$num."_2"].", ".$_GET["cl"].", ".$teacher_id.", ".$_POST["znam_cabinets_".$num]);
 
                             }else{
                                 echo "Не знущайтесь над $check_class_id класом! Вони вже мають достатньо цей урок";
@@ -311,7 +320,9 @@
                         echo "id='subject_chyselnyk_".$num."_1' name='subject_chyselnyk_".$num."_1'>
                         <option value='-'>Не обрано</option>";
                     $subjects = selectData(
-                        "sc.s_id, s.s_name, sc.sc_hours_count", "subjectsandclasses sc, subjects s", "WHERE sc.s_id = s.s_id AND sc.c_id = ".$_GET["cl"]
+                        "DISTINCT sc.s_id, s.s_name, sc.sc_hours_count", 
+                        "subjectsandclasses sc, subjects s", 
+                        "WHERE sc.s_id IN (SELECT s_id FROM teachersandsubjects WHERE c_id=".$_GET["cl"].") AND sc.s_id = s.s_id AND sc.c_id = ".$_GET["cl"]
                         )[0];
                     while($sub = mysqli_fetch_array($subjects)){
                         if($subject_id_chys == $sub["s_id"]) 
@@ -331,7 +342,9 @@
                         echo "id='subject_znamennyk_".$num."_2' name='subject_znamennyk_".$num."_2'> 
                         <option value='-'>Не обрано</option>";
                     $subjects = selectData(
-                        "sc.s_id, s.s_name, sc.sc_hours_count", "subjectsandclasses sc, subjects s", "WHERE sc.s_id = s.s_id AND sc.c_id = ".$_GET["cl"]
+                        "DISTINCT sc.s_id, s.s_name, sc.sc_hours_count", 
+                        "subjectsandclasses sc, subjects s", 
+                        "WHERE sc.s_id IN (SELECT s_id FROM teachersandsubjects WHERE c_id=".$_GET["cl"].") AND sc.s_id = s.s_id AND sc.c_id = ".$_GET["cl"]
                         )[0];
                     while($sub = mysqli_fetch_array($subjects)){
                         if($subject_id_znam == $sub["s_id"]) 
@@ -345,6 +358,7 @@
                     //------------------------------------------------------------------------------
                     echo "<td>";
                     echo "<select name='chys_cabinets_".$num."'>";
+                    echo "<option value='0'>Не обрано</option>";
 
                     $cabinets = selectData("cab_id", "cabinets")[0];
                     while($cabinetsArray = mysqli_fetch_array($cabinets)){
@@ -353,30 +367,40 @@
                         ); 
                 
                         list($cabinetId) = mysqli_fetch_array(
-                            selectData("cab_id", "cabinets", 
-                            "WHERE cab_num = ".$cabinetNumber)[0]
+                            selectData("tt_cabinet_id", "timetable", 
+                            "WHERE tt_num_lesson = $num AND tt_class_id = ".$_GET["cl"]." AND tt_chys_znam = 1")[0]
                         );
                         $is_selected = ($cabinetId == $cabinetsArray['cab_id']) ? ' selected' : '';
-                        echo "<option value=".$cabinetsArray['cab_id'].$is_selected.">".$cabinetNumber."</option>";
+                        echo "<option value=".$cabinetsArray["cab_id"].$is_selected.">".$cabinetNumber."</option>";
                     }
 
                     echo "</select><br>";
                     
                     //-------------------------------------------------------------------------------------------
                     echo "<select name='znam_cabinets_".$num."'>";
-
-                    $cabinets = selectData("cab_id", "cabinets")[0];
+                    //--------вивід обраного кабвнету
+                    $cab_id=0;
+                    list($cab_id, $cab_num) = mysqli_fetch_array(
+                            selectData("с.cab_id, с.cab_num", "cabinets с, timetable е", "WHERE tt_cabinet_id=cab_id and tt_num_lesson = $num AND tt_class_id = ".$_GET["cl"]." AND tt_chys_znam = 2")[0]
+                        ); 
+                     //--------вивід обраного кабвнету
+                     if ($cab_id==0)
+                        echo "<option value='0' selected>-</option>";
+                    else
+                        echo "<option value=".$cab_id." selected>".$cab_num."</option>";
+                    $cabinets = selectData("cab_id", "cabinets", 
+                    "WHERE cab_id NOT IN(SELECT DISTINCT tt_cabinet_id FROM timetable WHERE tt_num_lesson = $num AND tt_chys_znam = 2)")[0];
                     while($cabinetsArray = mysqli_fetch_array($cabinets)){
                         list($cabinetNumber) = mysqli_fetch_array(
                             selectData("cab_num", "cabinets", "WHERE cab_id = ".$cabinetsArray["cab_id"])[0]
                         ); 
                 
                         list($cabinetId) = mysqli_fetch_array(
-                            selectData("cab_id", "cabinets", 
-                            "WHERE cab_num = ".$cabinetNumber)[0]
+                            selectData("tt_cabinet_id", "timetable", 
+                            "WHERE tt_num_lesson = $num AND tt_class_id = ".$_GET["cl"]." AND tt_chys_znam = 2")[0]
                         );
                         $is_selected = ($cabinetId == $cabinetsArray['cab_id']) ? ' selected' : '';
-                        echo "<option value=".$cabinetsArray['cab_id'].$is_selected.">".$cabinetNumber."</option>";
+                        echo "<option value=".$cabinetsArray["cab_id"].$is_selected.">".$cabinetNumber."</option>";
                     }
 
                     echo "</select>";

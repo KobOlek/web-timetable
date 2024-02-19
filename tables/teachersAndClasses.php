@@ -10,9 +10,8 @@
            
             while($subjectArray = mysqli_fetch_array($sql_result_array)){
                 if(isset($_POST["teachers_".$subjectArray["s_id"]])) {
-                    insertData("teachersandsubjects", "t_id, s_id, c_id, ts_cabinet_id", 
-                    $_POST["teachers_".$subjectArray["s_id"]].", ".$subjectArray["s_id"].", ".$_GET["class"].", 
-                    ".$_POST["cabinets_".$subjectArray["s_id"]]);
+                    insertData("teachersandsubjects", "t_id, s_id, c_id", 
+                    $_POST["teachers_".$subjectArray["s_id"]].", ".$subjectArray["s_id"].", ".$_GET["class"]);
                 }
             }     
         }
