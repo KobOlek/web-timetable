@@ -7,7 +7,7 @@ function setChysZnam(chbox, sel, permanent_checkbox){
     permanent_checkbox.disabled = chbox.checked;
 }
 
-function setPermanent(permanentCheckbox, znamennyk_checkbox, chyselnyk_checkbox, znamennyk_select, chyselnyk_select){
+function setPermanent(permanentCheckbox, znamennyk_checkbox, chyselnyk_checkbox, znamennyk_select, znam_cabinets_select){
     znamennyk_checkbox.checked = false;
     chyselnyk_checkbox.checked = false;
     znamennyk_select.value = "-";
@@ -15,6 +15,7 @@ function setPermanent(permanentCheckbox, znamennyk_checkbox, chyselnyk_checkbox,
     znamennyk_checkbox.disabled = permanentCheckbox.checked;
     chyselnyk_checkbox.disabled = permanentCheckbox.checked;
     znamennyk_select.disabled = permanentCheckbox.checked;
+    znam_cabinets_select.disabled = permanentCheckbox.checked;
 }
 
 function turnOffPermanent(chys_znam_checkbox, permanent_checkbox){
