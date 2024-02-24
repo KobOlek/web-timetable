@@ -410,6 +410,19 @@
                    echo "<td>
                             <a href='?tb=".$_GET["tb"]."&cl=".$_GET["cl"]."&day=".$_GET["day"]."&group=$num'>Перейти до груп</a>
                         </td>";
+                    echo "<td>";
+                        $group_lessons = selectData("tt_subject_id, tt_cabinet_id", "timetable", "WHERE tt_num_lesson = $num 
+                            AND group_id = $num AND tt_day_id = ".$_GET["day"]." AND tt_class_id = ".$_GET["cl"])[0];
+                        while($lesson_id=mysqli_fetch_array($group_lessons)){
+                            list($subject, $cabinet) = mysqli_fetch_array(
+                                selectData(
+                                    "s.s_name, cab.cab_num", "subjects s, cabinets cab", 
+                                    "WHERE s.s_id = ".$lesson_id["tt_subject_id"]." AND cab.cab_id = ".$lesson_id["tt_cabinet_id"]
+                                )[0]
+                            );
+                            echo "$subject $cabinet<br>";
+                        } 
+                    echo "</td>";
                    //  Початок роботи з групами------------------------------------------------------------------------------
                     echo "</tr>";
                 }
