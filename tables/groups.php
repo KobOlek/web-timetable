@@ -12,9 +12,9 @@
                 insertData("timetable", 
                     "tt_day_id, tt_num_lesson, tt_chys_znam, 
                     tt_permanent, tt_subject_id, tt_class_id, 
-                    tt_id_teach, tt_cabinet_id, group_id", 
+                    tt_id_teach, tt_cabinet_id, group_id, group_number", 
                     $_GET["day"].", ".$_GET["group"].", 0, 1, ".$_POST["group_subject_$num"].", 
-                    ".$_GET["cl"].", $teacher_id, ".$_POST["group_cabinets_$num"].", ".$_GET["group"]);
+                    ".$_GET["cl"].", $teacher_id, ".$_POST["group_cabinets_$num"].", ".$_GET["group"].", $num");
             }else{
                 if($_POST["group_subject_$num"] == "-" && $_POST["group_cabinets_$num"] == 0)
                     echo "Нічого не вибрано у групі $num<br>";
@@ -39,25 +39,32 @@
             <tr>
                 <td>Уроки</td>
                 <?php
-                    for($num=1; $num <= 3; $num++){
+                    for($num=1; $num <= 3; $num++)
+                    {
                         echo "<td><select name='group_subject_$num'>
                         <option value='-'>Не обрано</option>";
-                    $subjects = selectData(
-                        "DISTINCT sc.s_id, s.s_name, sc.sc_hours_count", 
-                        "subjectsandclasses sc, subjects s", 
-                        "WHERE sc.s_id IN (SELECT s_id FROM teachersandsubjects WHERE c_id=".$_GET["cl"].") AND sc.s_id = s.s_id AND sc.c_id = ".$_GET["cl"]
-                        )[0];
-                    $subject_id = selectData("tt_subject_id", "timetable")[0];
-                    
-                    while($sub = mysqli_fetch_array($subjects))
-                    {
-                        if($subject_id == $sub["s_id"]) 
-                            $isSelected = "selected";
-                        else
-                            $isSelected = "";
-                        echo "<option value='".$sub["s_id"]."' $isSelected>".$sub["s_name"]."(".$sub["sc_hours_count"].")</option>";
-                    }
-                    echo "</select>";
+                        $subjects = selectData(
+                            "DISTINCT sc.s_id, s.s_name, sc.sc_hours_count", 
+                            "subjectsandclasses sc, subjects s", 
+                            "WHERE sc.s_id IN (SELECT s_id FROM teachersandsubjects WHERE c_id = ".$_GET["cl"].") AND sc.s_id = s.s_id AND sc.c_id = ".$_GET["cl"]
+                            )[0];
+                        
+                        list($group_subject) = mysqli_fetch_array(
+                                selectData("tt_subject_id", "timetable", 
+                                "WHERE tt_day_id = 
+                                ".$_GET["day"]." AND tt_class_id = ".$_GET["cl"]." AND group_id = ".$_GET["group"]." AND group_number = $num")[0]
+                            );
+                        
+                        while($sub = mysqli_fetch_array($subjects))
+                        {
+                            if($group_subject == $sub["s_id"]) 
+                                $isSelected = "selected";
+                            else
+                                $isSelected = "";
+                            echo "<option value='".$sub["s_id"]."' $isSelected>".$sub["s_name"]."(".$sub["sc_hours_count"].")</option>";
+                        }
+                     
+                        echo "</select>";
                     }
                 ?>
             </tr>
@@ -67,22 +74,30 @@
                     for($num=1; $num <= 3; $num++){
                         echo "<td>";
                         echo "<select name='group_cabinets_".$num."'>";
-                        if ($tt_cabinet_id_chys == "")
-                            echo "<option value='0' selected>-</option>";
-                        else
-                        {
-                            list($cabinetNumber) = mysqli_fetch_array(
-                                selectData("cab_num", "cabinets", "WHERE cab_id = ".$tt_cabinet_id_chys)[0]); 
-                            echo "<option value=".$tt_cabinet_id_chys." selected>".$cabinetNumber."</option>";
-                        }
-                            
+
+                        echo "<option value='0' selected>-</option>";
                         
-                        $cabinets = selectData("cab_id, cab_num", "cabinets", 
-                        "WHERE cab_id NOT IN(SELECT DISTINCT tt_cabinet_id FROM timetable WHERE tt_num_lesson = $num AND tt_chys_znam != 2)")[0];
+                        // list($cabinetNumber) = mysqli_fetch_array(
+                        //     selectData("cab_num", "cabinets", "WHERE cab_id = ".$tt_cabinet_id_chys)[0]); 
+                        // echo "<option value=".$tt_cabinet_id_chys." selected>".$cabinetNumber."</option>";
+                    
+                            
+                        list($group_cabinet) = mysqli_fetch_array(
+                                selectData("tt_cabinet_id", "timetable", 
+                                "WHERE tt_day_id = 
+                                ".$_GET["day"]." AND tt_class_id = ".$_GET["cl"]." AND group_id = ".$_GET["group"]." AND group_number = $num")[0]
+                            );
+
+                        // $cabinets = selectData("cab_id, cab_num", "cabinets", 
+                        // "WHERE cab_id NOT IN(SELECT DISTINCT tt_cabinet_id FROM timetable WHERE tt_num_lesson = $num)")[0];
+                        $cabinets = selectData("cab_id, cab_num", "cabinets")[0];
                         while($cabinetsArray = mysqli_fetch_array($cabinets))
                         {
-
-                            echo "<option value=".$cabinetsArray["cab_id"].">".$cabinetsArray["cab_num"]."</option>";
+                            if($group_cabinet == $cabinetsArray["cab_id"]) 
+                                $isSelected = "selected";
+                            else
+                                $isSelected = "";
+                            echo "<option value=".$cabinetsArray["cab_id"]." $isSelected>".$cabinetsArray["cab_num"]."</option>";
                         }
 
                         echo "</select>";
