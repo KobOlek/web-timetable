@@ -4,6 +4,30 @@
 
 <form action="" method="post" class="edit-form">
     <?php
+        if(isset($_POST["edit_button"])){
+            if(isset($_POST["name_input"]) && isset($_POST["room_number"])){
+                $name_ = $_POST["name_input"];
+                $room_num_ = $_POST["room_number"];
+
+                if($name_ != " " && $room_num_ != " "){
+                    $name = $name_;
+                    $room_num = $room_num_; 
+                    updateData("cabinets", ["cab_name", "cab_num"], ["'$name_'", $room_num_],  "WHERE cab_id = ".$_GET["edit"]);
+                }
+                
+            }
+        }
+        if(isset($_POST["submit_button"])){
+            if(isset($_POST["name_input"]) && isset($_POST["room_number"])){
+                $name = $_POST["name_input"];
+                $room_num = $_POST["room_number"];
+                if($name != " " && $room_num != " "){
+                    insertData("cabinets", "cab_name, cab_num","'".$name."', '".$room_num."'");
+                    redirectTo("admin.php?tb=".$_GET["tb"]);
+                }
+            }
+        }
+
         if(isset($_GET["edit"])){
 
             list($name, $room_num) = mysqli_fetch_array(
@@ -48,30 +72,3 @@
         ?>
     </table>
 </div>
-<?php
-    if(isset($_POST["edit_button"])){
-        if(isset($_POST["name_input"]) && isset($_POST["room_number"])){
-            $name_ = $_POST["name_input"];
-            $room_num_ = $_POST["room_number"];
-
-            if($name_ != " " && $room_num_ != " "){
-                $name = $name_;
-                $room_num = $room_num_; 
-                updateData("cabinets", ["cab_name", "cab_num"], [$name_, $room_num_],  "WHERE cab_id = ".$_GET["edit"]);
-                
-                redirectTo("admin.php?tb=".$_GET["tb"]);
-            }
-            
-        }
-    }
-    if(isset($_POST["submit_button"])){
-        if(isset($_POST["name_input"]) && isset($_POST["room_number"])){
-            $name = $_POST["name_input"];
-            $room_num = $_POST["room_number"];
-            if($name != " " && $room_num != " "){
-                insertData("cabinets", "cab_name, cab_num","'".$name."', '".$room_num."'");
-                redirectTo("admin.php?tb=".$_GET["tb"]);
-            }
-        }
-    }
-?>

@@ -22,7 +22,7 @@
             list($inserted_subject_hours) = mysqli_fetch_array(
                 selectData(
                     "COUNT(*)", "timetable",
-                    "WHERE tt_class_id = ".$_GET["cl"]." AND tt_subject_id = ".$_POST["subject_chyselnyk_".$num."_1"]
+                    "WHERE tt_class_id = ".$_GET["cl"]." AND tt_subject_id = ".$_POST["subject_chyselnyk_".$num."_1"]." AND group_id = 0"
                 )[0]
             );
 
@@ -54,7 +54,7 @@
 
         if(isset($_POST["save_button"]))
         {
-            deleteData("timetable", "WHERE tt_class_id = ".$_GET["cl"]." AND tt_day_id = ".$_GET["day"]);
+            deleteData("timetable", "WHERE tt_class_id = ".$_GET["cl"]." AND tt_day_id = ".$_GET["day"]." AND group_id = 0");
             for($num=1; $num < 9; $num++)
             {
                 // if(isset($_POST["chyselnyk_".$num])){
@@ -90,7 +90,8 @@
                         list($inserted_subject_hours) = mysqli_fetch_array(
                             selectData(
                                 "COUNT(*)", "timetable",
-                                "WHERE tt_class_id = ".$_GET["cl"]." AND tt_subject_id = ".$_POST["subject_chyselnyk_".$num."_1"]
+                                "WHERE tt_class_id = ".$_GET["cl"]." AND tt_subject_id = ".$_POST["subject_chyselnyk_".$num."_1"]." 
+                                AND group_id = 0"
                             )[0]
                         );
                         //-----------------------------------------------------------------------------------------------------------------
@@ -140,7 +141,8 @@
                         list($inserted_subject_hours) = mysqli_fetch_array(
                             selectData(
                                 "COUNT(*)", "timetable",
-                                "WHERE tt_class_id = ".$_GET["cl"]." AND tt_subject_id = ".$_POST["subject_znamennyk_".$num."_2"]
+                                "WHERE tt_class_id = ".$_GET["cl"]." AND tt_subject_id = ".$_POST["subject_znamennyk_".$num."_2"]." 
+                                AND group_id = 0"
                             )[0]
                         );
 
@@ -202,7 +204,6 @@
                         <th>Кабінет</th>
                         <th>Є поділ</th>
                         <th>Уроки в групах</th>                        
-
                     </tr>";
                 for($num=1; $num < 9; $num++)
                 {                   
@@ -317,7 +318,8 @@
                         document.getElementById('<?php echo "subject_chyselnyk_".$num."_1"; ?>'),
                         [document.getElementById('<?php echo "chyselnyk_$num"; ?>'), 
                         document.getElementById('<?php echo "znamennyk_$num"; ?>'),
-                        document.getElementById('<?php echo "subject_znamennyk_".$num."_2"; ?>')]);"
+                        document.getElementById('<?php echo "subject_znamennyk_".$num."_2"; ?>'),
+                        document.getElementById('<?php echo "znam_cabinets_$num"?>')]);"
                     <?php 
                         echo "id='subject_chyselnyk_".$num."_1' name='subject_chyselnyk_".$num."_1'>
                         <option value='-'>Не обрано</option>";
@@ -371,11 +373,11 @@
                     }
                         
                     
-                    $cabinets = selectData("cab_id, cab_num", "cabinets", 
-                    "WHERE cab_id NOT IN(SELECT DISTINCT tt_cabinet_id FROM timetable WHERE tt_num_lesson = $num AND tt_chys_znam != 2)")[0];
+                    // $cabinets = selectData("cab_id, cab_num", "cabinets", 
+                    // "WHERE cab_id NOT IN(SELECT DISTINCT tt_cabinet_id FROM timetable WHERE tt_num_lesson = $num AND tt_chys_znam != 2)")[0];
+                    $cabinets = selectData("cab_id, cab_num", "cabinets")[0];
                     while($cabinetsArray = mysqli_fetch_array($cabinets))
                     {
-
                         echo "<option value=".$cabinetsArray["cab_id"].">".$cabinetsArray["cab_num"]."</option>";
                     }
 
@@ -397,7 +399,6 @@
                     "WHERE cab_id NOT IN(SELECT DISTINCT tt_cabinet_id FROM timetable WHERE tt_num_lesson = $num AND tt_chys_znam != 2)")[0];
                     while($cabinetsArray = mysqli_fetch_array($cabinets))
                     {
-
                         echo "<option value=".$cabinetsArray["cab_id"].">".$cabinetsArray["cab_num"]."</option>";
                     }
 
@@ -423,6 +424,7 @@
                             echo "$subject $cabinet<br>";
                         } 
                     echo "</td>";
+
                    //  Початок роботи з групами------------------------------------------------------------------------------
                     echo "</tr>";
                 }

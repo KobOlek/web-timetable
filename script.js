@@ -32,3 +32,9 @@ function setSelect(chbox, sel, chys_znam_checkboxes){
         chys_znam_checkboxes[index].disabled = chbox.checked;
     }
 }
+
+function setSameSubject(groupsSelects, subjectSel) {
+    for (let index = 0; index < groupsSelects.length; index++) {
+        groupsSelects[index].value = subjectSel.value;
+    }
+}

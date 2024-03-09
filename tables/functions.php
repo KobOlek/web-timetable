@@ -22,7 +22,11 @@
     function updateData($table_name, $table_columns, $insert_values, $condition){
         $set_string = "";
         for ($i=0; $i < count($table_columns); $i++) { 
-            $set_string .= $table_columns[$i]." = ".$insert_values[$i];
+            if($i < count($table_columns)-1)
+                $comma = ", ";
+            else
+                $comma = "";
+            $set_string .= $table_columns[$i]." = ".$insert_values[$i].$comma;
         }
         $sql_request = 
         "UPDATE ".$table_name." SET ".$set_string." ".$condition;
