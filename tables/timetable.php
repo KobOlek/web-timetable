@@ -181,7 +181,7 @@
             echo "<p>".$name."</p>";
 
             $d = ["Понедліок", "Вівторок", "Середа", "Четвер", "П'ятниця"];
-
+            
             for ($j=0; $j < count($d); $j++) { 
                 echo "<a href='?tb=".$_GET["tb"]."&cl=".$_GET["cl"]."&day=".($j+1)."'>";
                 echo $d[$j]."</a> | ";
@@ -209,10 +209,10 @@
                 {                   
                   //чисельник-------------------------------
                     $data = selectData("tt_num_lesson, tt_chys_znam, tt_permanent, tt_subject_id, tt_cabinet_id", 
-                    "timetable", "WHERE tt_chys_znam != 2 AND tt_num_lesson = $num AND 
-                    tt_class_id = ".$_GET["cl"]." AND tt_day_id = ".$_GET["day"])[0];
+                        "timetable", "WHERE tt_chys_znam != 2 AND tt_num_lesson = $num AND 
+                        tt_class_id = ".$_GET["cl"]." AND tt_day_id = ".$_GET["day"])[0];
                     list($num_lesson, $tt_chys, $permanent, $subject_id_chys, $tt_cabinet_id_chys) = 
-                    mysqli_fetch_array($data);
+                        mysqli_fetch_array($data);
                     
                     if($tt_chys == 1){
                         $isCheckedChys = "checked";
@@ -323,42 +323,45 @@
                     <?php 
                         echo "id='subject_chyselnyk_".$num."_1' name='subject_chyselnyk_".$num."_1'>
                         <option value='-'>Не обрано</option>";
-                    $subjects = selectData(
-                        "DISTINCT sc.s_id, s.s_name, sc.sc_hours_count", 
-                        "subjectsandclasses sc, subjects s", 
-                        "WHERE sc.s_id IN (SELECT s_id FROM teachersandsubjects WHERE c_id=".$_GET["cl"].") AND sc.s_id = s.s_id AND sc.c_id = ".$_GET["cl"]
-                        )[0];
-                    while($sub = mysqli_fetch_array($subjects))
-                    {
-                        if($subject_id_chys == $sub["s_id"]) 
-                            $isSelected = "selected";
-                        else
-                            $isSelected = "";
-                        echo "<option value='".$sub["s_id"]."' $isSelected>".$sub["s_name"]."(".$sub["sc_hours_count"].")</option>";
-                    }
-                    echo "</select>";
-                    echo "<br><select"; ?>
-                        onclick="setChysZnam(
-                            document.getElementById('<?php echo "znamennyk_$num"; ?>'),
-                            document.getElementById('<?php echo "subject_znamennyk_".$num."_2"; ?>'),
-                            document.getElementById('<?php echo "permanent_$num"; ?>'));"
+                    
+                        $subjects = selectData(
+                            "DISTINCT sc.s_id, s.s_name, sc.sc_hours_count", 
+                            "subjectsandclasses sc, subjects s", 
+                            "WHERE sc.s_id IN (SELECT s_id FROM teachersandsubjects WHERE c_id=".$_GET["cl"].") 
+                            AND sc.s_id = s.s_id AND sc.c_id = ".$_GET["cl"]
+                            )[0];
+                        
+                        while($sub = mysqli_fetch_array($subjects))
+                        {
+                            if($subject_id_chys == $sub["s_id"]) 
+                                $isSelected = "selected";
+                            else
+                                $isSelected = "";
+                            echo "<option value='".$sub["s_id"]."' $isSelected>".$sub["s_name"]."(".$sub["sc_hours_count"].")</option>";
+                        }
+                        echo "</select>";
+                        echo "<br><select"; ?>
+                            onclick="setChysZnam(
+                                document.getElementById('<?php echo "znamennyk_$num"; ?>'),
+                                document.getElementById('<?php echo "subject_znamennyk_".$num."_2"; ?>'),
+                                document.getElementById('<?php echo "permanent_$num"; ?>'));"
                     <?php
 
                         echo "id='subject_znamennyk_".$num."_2' name='subject_znamennyk_".$num."_2'> 
                         <option value='-'>Не обрано</option>";
-                    $subjects = selectData(
-                        "DISTINCT sc.s_id, s.s_name, sc.sc_hours_count", 
-                        "subjectsandclasses sc, subjects s", 
-                        "WHERE sc.s_id IN (SELECT s_id FROM teachersandsubjects WHERE c_id=".$_GET["cl"].") AND sc.s_id = s.s_id AND sc.c_id = ".$_GET["cl"])[0];
-                    while($sub = mysqli_fetch_array($subjects))
-                    {
-                        if($subject_id_znam == $sub["s_id"]) 
-                            $isSelected = "selected";
-                        else
-                            $isSelected = "";
-                        echo "<option value='".$sub["s_id"]."' $isSelected>".$sub["s_name"]."(".$sub["sc_hours_count"].")</option>";
-                    }
-                    echo "</select></td>";
+                        $subjects = selectData(
+                            "DISTINCT sc.s_id, s.s_name, sc.sc_hours_count", 
+                            "subjectsandclasses sc, subjects s", 
+                            "WHERE sc.s_id IN (SELECT s_id FROM teachersandsubjects WHERE c_id=".$_GET["cl"].") AND sc.s_id = s.s_id AND sc.c_id = ".$_GET["cl"])[0];
+                        while($sub = mysqli_fetch_array($subjects))
+                        {
+                            if($subject_id_znam == $sub["s_id"]) 
+                                $isSelected = "selected";
+                            else
+                                $isSelected = "";
+                            echo "<option value='".$sub["s_id"]."' $isSelected>".$sub["s_name"]."(".$sub["sc_hours_count"].")</option>";
+                        }
+                        echo "</select></td>";
 
                     //-----------------------------------chys_cabinets_-------------------------------------------
                     echo "<td>";
@@ -373,9 +376,9 @@
                     }
                         
                     
-                    // $cabinets = selectData("cab_id, cab_num", "cabinets", 
-                    // "WHERE cab_id NOT IN(SELECT DISTINCT tt_cabinet_id FROM timetable WHERE tt_num_lesson = $num AND tt_chys_znam != 2)")[0];
-                    $cabinets = selectData("cab_id, cab_num", "cabinets")[0];
+                    $cabinets = selectData("cab_id, cab_num", "cabinets", 
+                    "WHERE cab_id NOT IN(SELECT DISTINCT tt_cabinet_id FROM timetable WHERE tt_num_lesson = $num AND tt_chys_znam != 2)")[0];
+                    //$cabinets = selectData("cab_id, cab_num", "cabinets")[0];
                     while($cabinetsArray = mysqli_fetch_array($cabinets))
                     {
                         echo "<option value=".$cabinetsArray["cab_id"].">".$cabinetsArray["cab_num"]."</option>";

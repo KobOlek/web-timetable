@@ -85,7 +85,7 @@
 
                 if($is_cabinet_free && mysqli_affected_rows($GLOBALS["link"]) == 0)
                 {
-                    insertData("timetable", 
+                    echo insertData("timetable", 
                         "tt_day_id, tt_num_lesson, tt_chys_znam, 
                         tt_permanent, tt_subject_id, tt_class_id, 
                         tt_id_teach, tt_cabinet_id, group_id, group_number", 
@@ -200,29 +200,27 @@
                         echo "<td>";
                         echo "<select name='group_cabinets_".$num."'>";
 
-                        echo "<option value='0' selected>-</option>";
-                        
-                        // list($cabinetNumber) = mysqli_fetch_array(
-                        //     selectData("cab_num", "cabinets", "WHERE cab_id = ".$tt_cabinet_id_chys)[0]); 
-                        // echo "<option value=".$tt_cabinet_id_chys." selected>".$cabinetNumber."</option>";
-                    
-                            
                         list($group_cabinet) = mysqli_fetch_array(
                                 selectData("tt_cabinet_id", "timetable", 
                                 "WHERE tt_day_id = 
                                 ".$_GET["day"]." AND tt_class_id = ".$_GET["cl"]." AND group_id = ".$_GET["group"]." AND group_number = $num")[0]
                             );
 
-                        // $cabinets = selectData("cab_id, cab_num", "cabinets", 
-                        // "WHERE cab_id NOT IN(SELECT DISTINCT tt_cabinet_id FROM timetable WHERE tt_num_lesson = $num)")[0];
-                        $cabinets = selectData("cab_id, cab_num", "cabinets")[0];
+                        if ($group_cabinet=="")
+                            echo "<option value='0' selected>-</option>";
+                        else
+                        {
+                            list($cabinetNumber) = mysqli_fetch_array(
+                                selectData("cab_num", "cabinets", "WHERE cab_id = ".$group_cabinet)[0]); 
+                            echo "<option value=".$group_cabinet." selected>".$cabinetNumber."</option>";
+                        }
+
+                        $cabinets = selectData("cab_id, cab_num", "cabinets", 
+                        "WHERE cab_id NOT IN(SELECT DISTINCT tt_cabinet_id FROM timetable WHERE tt_num_lesson = $num)")[0];
+                        //$cabinets = selectData("cab_id, cab_num", "cabinets")[0];
                         while($cabinetsArray = mysqli_fetch_array($cabinets))
                         {
-                            if($group_cabinet == $cabinetsArray["cab_id"]) 
-                                $isSelected = "selected";
-                            else
-                                $isSelected = "";
-                            echo "<option value=".$cabinetsArray["cab_id"]." $isSelected>".$cabinetsArray["cab_num"]."</option>";
+                            echo "<option value=".$cabinetsArray["cab_id"].">".$cabinetsArray["cab_num"]."</option>";
                         }
 
                         echo "</select>";
@@ -250,9 +248,20 @@
                                     ".$_GET["day"]." AND tt_class_id = ".$_GET["cl"]." AND group_id = ".$_GET["group"]." AND group_number = $num")[0]
                                 );
 
+                            if ($group_teacher=="")
+                                echo "<option value='0' selected>-</option>";
+                            else
+                            {
+                                list($teacher_fullname) = mysqli_fetch_array(
+                                    selectData("t_fullname", "teachers", "WHERE t_id = ".$group_teacher)[0]); 
+                                echo "<option value=".$group_teacher." selected>".$teacher_fullname."</option>";
+                            }
+
                             // $cabinets = selectData("cab_id, cab_num", "cabinets", 
                             // "WHERE cab_id NOT IN(SELECT DISTINCT tt_cabinet_id FROM timetable WHERE tt_num_lesson = $num)")[0];
-                            $teachers = selectData("t_id, t_fullname", "teachers")[0];
+                            $teachers = selectData("t_id, t_fullname", "teachers", 
+                            "WHERE t_id NOT IN(SELECT DISTINCT tt_id_teach FROM timetable WHERE tt_num_lesson = ".$_GET["group"]." 
+                            AND tt_day_id = ".$_GET["day"].")")[0];
                             while($teachersArray = mysqli_fetch_array($teachers))
                             {
                                 if($group_teacher == $teachersArray["t_id"]) 
