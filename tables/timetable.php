@@ -29,7 +29,7 @@
             list($check_class_id, $check_lesson_number, $check_chys_znam, $check_permanent) = mysqli_fetch_array(
                 selectData(
                     "tt_class_id, tt_num_lesson, tt_chys_znam, tt_permanent", "timetable",
-                    "WHERE tt_num_lesson = $num AND tt_chys_znam = 1 AND tt_permanent = 0 AND tt_id_teach = $teacher_id"
+                    "WHERE tt_num_lesson = $num AND tt_chys_znam = 1 AND tt_permanent = 0 AND tt_id_teach = $teacher_id AND group_id != 0"
                 )[0]                         
             );     
 
@@ -99,7 +99,7 @@
                         list($check_class_id, $check_lesson_number, $check_chys_znam, $check_permanent) = mysqli_fetch_array(
                             selectData(
                                 "tt_class_id, tt_num_lesson, tt_chys_znam, tt_permanent", "timetable",
-                                "WHERE tt_num_lesson = $num AND tt_chys_znam = 0 AND tt_permanent = 1 AND tt_id_teach = $teacher_id"
+                                "WHERE tt_num_lesson = $num AND tt_chys_znam = 0 AND tt_permanent = 1 AND tt_id_teach = $teacher_id AND group_id != 0"
                             )[0]                         
                         );
                             
@@ -149,7 +149,7 @@
                         list($check_class_id, $check_lesson_number, $check_chys_znam, $check_permanent) = mysqli_fetch_array(
                             selectData(
                                 "tt_class_id, tt_num_lesson, tt_chys_znam, tt_permanent", "timetable",
-                                "WHERE tt_num_lesson = $num AND tt_chys_znam = 2 AND tt_permanent = 0 AND tt_id_teach = $teacher_id"
+                                "WHERE tt_num_lesson = $num AND tt_chys_znam = 2 AND tt_permanent = 0 AND tt_id_teach = $teacher_id AND group_id != 0"
                             )[0]                         
                         );
                         //-----------------------------------------------------------------------------------------------------------------

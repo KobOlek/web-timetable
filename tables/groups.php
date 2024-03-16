@@ -60,7 +60,7 @@
     if(isset($_POST["save_group_button"]))
     {
         deleteData("timetable", 
-        "WHERE tt_num_lesson = ".$_GET["group"]." AND tt_day_id = ".$_GET["day"]." AND tt_class_id = ".$_GET["cl"]);
+        "WHERE tt_num_lesson = ".$_GET["group"]." AND tt_day_id = ".$_GET["day"]." AND tt_class_id = ".$_GET["cl"]." AND group_id = ".$_GET["group"]);
         for($num=1; $num <= 3; $num++){
             if($_POST["group_subject_$num"] != "-" && $_POST["group_cabinets_$num"] != 0){
                 list($teacher_id) = mysqli_fetch_array(
