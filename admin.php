@@ -15,7 +15,7 @@
         <caption>Адмін панель</caption>
         <tr>
             <th>
-                <a href="<?php echo $_SERVER["PHP_SELF"];?>">Головна</a>
+                <a href="index.php">Головна</a>
             </th>
             <th>
                 <a href="?tb=1">Викладачі</a>

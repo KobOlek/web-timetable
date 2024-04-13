@@ -2,7 +2,7 @@
 <?php
     function selectData($column, $table_name, $condition=""){
         $sql_request = 'SELECT '.$column.' FROM '.$table_name.' '.$condition;
-       //echo $sql_request."<br>";
+        //echo $sql_request."<br>";
         $sql_result_array = mysqli_query($GLOBALS["link"], $sql_request);
         return [$sql_result_array, $sql_request];
     }
@@ -45,5 +45,6 @@
         if(!$result){
             echo mysqli_error($GLOBALS["link"]);
         }
+        return $sql_request;
     }
 ?>

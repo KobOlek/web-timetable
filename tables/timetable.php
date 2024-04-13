@@ -64,10 +64,10 @@
                 //     //echo $_POST["znamennyk_".$num];
                 //     //$k=1;
                 // }
-                if(isset($_POST["permanent_".$num])){
-                   // echo $_POST["permanent_".$num];
-                   if($_POST["permanent_".$num] != "-"){
-                        //echo $_POST["subject_chyselnyk_".$num."_1"];
+                if(isset($_POST["permanent_".$num]) && isset($_POST["subject_chyselnyk_".$num."_1"])){
+                   echo $_POST["permanent_".$num];
+                   //echo $_POST["subject_chyselnyk_".$num."_1"];
+                   if($_POST["permanent_".$num] != "-" && $_POST["subject_chyselnyk_".$num."_1"] != "-"){
                         getHours($num, 0, 1);
                     }
 
@@ -107,7 +107,7 @@
                             //echo $subject_hours."/".$inserted_subject_hours." ";
                             if($inserted_subject_hours < $subject_hours){
                                
-                                insertData("timetable", 
+                                echo insertData("timetable", 
                                     "tt_day_id, tt_num_lesson, tt_chys_znam, 
                                     tt_permanent, tt_subject_id, tt_class_id, tt_id_teach, tt_cabinet_id",
                                     $_GET["day"].", $num, 
@@ -180,7 +180,11 @@
             );
             echo "<p>".$name."</p>";
 
-            $d = ["Понедліок", "Вівторок", "Середа", "Четвер", "П'ятниця"];
+            echo "<div>";
+            include("tm_control.php");
+            echo "</div>";
+
+            $d = ["Понеділок", "Вівторок", "Середа", "Четвер", "П'ятниця"];
             
             for ($j=0; $j < count($d); $j++) { 
                 echo "<a href='?tb=".$_GET["tb"]."&cl=".$_GET["cl"]."&day=".($j+1)."'>";
@@ -236,6 +240,14 @@
                         )
                         });";
                         echo "</script>";
+                    }
+
+                    list($is_group) = mysqli_fetch_array(
+                        selectData("DISTINCT tt_subject_id", "timetable", "WHERE group_id != 0 AND tt_num_lesson = $num")[0]
+                    );
+                    if(mysqli_affected_rows($GLOBALS["link"]) > 0)
+                    {
+                        //echo $is_group;   
                     }
 
                     elseif($tt_chys == 0 && $permanent == 1){
@@ -333,14 +345,14 @@
                         
                         while($sub = mysqli_fetch_array($subjects))
                         {
-                            if($subject_id_chys == $sub["s_id"]) 
+                            if($subject_id_chys == $sub["s_id"] && $subject_id_chys != $is_group) 
                                 $isSelected = "selected";
                             else
                                 $isSelected = "";
                             echo "<option value='".$sub["s_id"]."' $isSelected>".$sub["s_name"]."(".$sub["sc_hours_count"].")</option>";
                         }
                         echo "</select>";
-                        echo "<br><select"; ?>
+                        echo "<br><select"; if($subject_id_chys != $is_group) ?>
                             onclick="setChysZnam(
                                 document.getElementById('<?php echo "znamennyk_$num"; ?>'),
                                 document.getElementById('<?php echo "subject_znamennyk_".$num."_2"; ?>'),

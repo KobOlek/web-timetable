@@ -38,3 +38,7 @@ function setSameSubject(groupsSelects, subjectSel) {
         groupsSelects[index].value = subjectSel.value;
     }
 }
+
+function switchOffPermanent(permanent_checkbox){
+    permanent_checkbox.checked = false;
+}
