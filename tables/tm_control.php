@@ -3,7 +3,7 @@
 ?>
 <table>
     <tr>
-    <td>
+    <td valign="top">
         <table border='1'>
             <caption>Години</caption>
             <tr>
@@ -30,6 +30,7 @@
             ?>
         </table>
     </td>
+    <td style="width: 100px;"></td>
     <td valign="top">
         <table border='1'>
             <caption>Кабінети</caption>
@@ -79,8 +80,20 @@
                         for($n=1; $n <= 8; $n++)
                         {
                             $cell_color = getCabinetColorsAccordingToStatus($cabinet["cab_id"], $n);
-                            $cell_text = $cell_color == "red" ? "Зайнятий в цьому класі" : 
-                            ($cell_color == "yellow" ? "Зайнятий в іншому класі" : "Вільний");
+                            $cell_text = "";
+                            switch($cell_colors[$cell_color])
+                            {
+                                case "red":
+                                    $cell_text = "Зайнятий";
+                                    break;
+                                case "yellow":
+                                    $cell_text = "Зайнятий в іншому класі";
+                                    break;
+                                case "darkgreen":
+                                    $cell_text = "Вільний";
+                                    break;
+                            }
+
                             echo "
                             <td style='background: ".$cell_colors[$cell_color]."; color: ".$cell_colors[$cell_color].";'>
                             <abbr title='$cell_text'>l</abbr>

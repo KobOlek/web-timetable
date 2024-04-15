@@ -40,6 +40,7 @@
             <th>Edit</th>
             <th>Id</th>
             <th>Fullname</th>
+            <th>Hours</th>
             <th>Contacts</th>
             <th>Change disciplines</th>
         </tr>

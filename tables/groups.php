@@ -75,6 +75,7 @@
                     if($_POST["group_cabinets_$cabinet_index"] != 0 && $num != $cabinet_index)
                     {
                         $is_cabinet_free = $_POST["group_cabinets_$num"] != $_POST["group_cabinets_$cabinet_index"];
+                        echo "<br>".$_POST["group_cabinets_$num"]."<br>";
                     }
                 }
 
@@ -85,12 +86,13 @@
 
                 if($is_cabinet_free && mysqli_affected_rows($GLOBALS["link"]) == 0)
                 {
-                    insertData("timetable", 
+                    echo insertData("timetable", 
                         "tt_day_id, tt_num_lesson, tt_chys_znam, 
                         tt_permanent, tt_subject_id, tt_class_id, 
                         tt_id_teach, tt_cabinet_id, group_id, group_number", 
                         $_GET["day"].", ".$_GET["group"].", 0, 
-                        1, ".$_POST["group_subject_$num"].", ".$_GET["cl"].", $teacher_id, ".$_POST["group_cabinets_$num"].", ".$_GET["group"].", $num");
+                        1, ".$_POST["group_subject_$num"].", ".$_GET["cl"].", 
+                        $teacher_id, ".$_POST["group_cabinets_$num"].", ".$_GET["group"].", $num");
                 }
                 else
                 {
@@ -211,7 +213,7 @@
                     {
                         list($cabinetNumber) = mysqli_fetch_array(
                             selectData("cab_num", "cabinets", "WHERE cab_id = ".$group_cabinet)[0]); 
-                        echo "<option value=".$group_cabinet." selected>".$cabinetNumber."</option>";
+                        echo "<option value=".$group_cabinet." selected>".$group_cabinet." ".$cabinetNumber."</option>";
                     }
 
                     // $cabinets = selectData("cab_id, cab_num", "cabinets", 
@@ -219,7 +221,7 @@
                     $cabinets = selectData("cab_id, cab_num", "cabinets")[0];
                     while($cabinetsArray = mysqli_fetch_array($cabinets))
                     {
-                        echo "<option value=".$cabinetsArray["cab_id"].">".$cabinetsArray["cab_num"]."</option>";
+                        echo "<option value=".$cabinetsArray["cab_id"].">".$cabinetsArray["cab_id"]." ".$cabinetsArray["cab_num"]."</option>";
                     }
 
                     echo "</select>";
@@ -232,7 +234,7 @@
                 <?php
                     for($num=1; $num <= 3; $num++){
                         echo "<td>";
-                        echo "<select name='group_cabinets_".$num."'>";
+                        echo "<select name='group_teachers_".$num."'>";
 
                         echo "<option value='0' selected>-</option>";
                         

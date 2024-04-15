@@ -26,6 +26,16 @@
                 )[0]
             );
 
+            //if($group_inserted_subject_hours == null)
+            
+
+            list($group_inserted_subject_hours) = mysqli_fetch_array(
+                selectData(
+                    "DISTINCT COUNT(*)", "timetable",
+                    "WHERE tt_class_id = ".$_GET["cl"]." AND tt_subject_id = ".$_POST["subject_chyselnyk_".$num."_1"]." AND group_id != 0"
+                )[0]
+            );
+
             list($check_class_id, $check_lesson_number, $check_chys_znam, $check_permanent) = mysqli_fetch_array(
                 selectData(
                     "tt_class_id, tt_num_lesson, tt_chys_znam, tt_permanent", "timetable",
@@ -35,7 +45,7 @@
 
             if(mysqli_affected_rows($GLOBALS["link"]) == 0){
                 //echo $subject_hours."/".$inserted_subject_hours." ";;
-                if($inserted_subject_hours < $subject_hours){
+                if($inserted_subject_hours + $group_inserted_subject_hours < $subject_hours){
                     insertData("timetable", 
                                     "tt_day_id, tt_num_lesson, tt_chys_znam, 
                                     tt_permanent, tt_subject_id, tt_class_id, tt_id_teach, tt_cabinet_id",
@@ -180,17 +190,19 @@
             );
             echo "<p>".$name."</p>";
 
-            echo "<div>";
-            include("tm_control.php");
-            echo "</div>";
-
             $d = ["Понеділок", "Вівторок", "Середа", "Четвер", "П'ятниця"];
             
             for ($j=0; $j < count($d); $j++) { 
                 echo "<a href='?tb=".$_GET["tb"]."&cl=".$_GET["cl"]."&day=".($j+1)."'>";
                 echo $d[$j]."</a> | ";
             }
-
+            
+            if(isset($_GET["day"]))
+            {
+                echo "<br>";
+                echo "<a href='?tb=".$_GET["tb"]."&cl=".$_GET["cl"]."&day=".$_GET["day"]."&need_check=1'>Перевірка</a>";
+            }
+            
             if(isset($_GET["day"])){
                 echo "<p>".$d[$_GET["day"]-1]."</p>";  
                 echo "<br><input type='submit' name='save_button'><br>";
@@ -443,9 +455,16 @@
                    //  Початок роботи з групами------------------------------------------------------------------------------
                     echo "</tr>";
                 }
-            
+                
                 echo "</table>";  
             }
         }
+        echo "<td>";
+        if(isset($_GET["need_check"]))
+        {
+            if($_GET["need_check"] == 1)
+                include("tm_control.php");
+        }    
+        echo "</td>";
     ?>
 </form>
