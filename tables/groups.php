@@ -57,17 +57,27 @@
     }
     
 
+    function checkIfTeachersAreDifferent($num)
+    {
+        if($num == 1)
+            return !($_POST["group_teachers_$num"] == $_POST["group_teachers_".($num+1)] 
+            || $_POST["group_teachers_$num"] == $_POST["group_teachers_".($num+2)]);
+        if($num == 2)
+            return !($_POST["group_teachers_$num"] == $_POST["group_teachers_".($num-1)] 
+            || $_POST["group_teachers_$num"] == $_POST["group_teachers_".($num+1)]);
+        if($num == 3)
+            return !($_POST["group_teachers_$num"] == $_POST["group_teachers_".($num-2)] 
+            || $_POST["group_teachers_$num"] == $_POST["group_teachers_".($num-1)]);
+    }
+
     if(isset($_POST["save_group_button"]))
     {
         deleteData("timetable", 
         "WHERE tt_num_lesson = ".$_GET["group"]." AND group_id != 0 AND tt_day_id = ".$_GET["day"]." AND tt_class_id = ".$_GET["cl"]." AND group_id = ".$_GET["group"]);
         for($num=1; $num <= 3; $num++){
             if($_POST["group_subject_$num"] != "-" && $_POST["group_cabinets_$num"] != 0){
-                list($teacher_id) = mysqli_fetch_array(
-                    selectData("t_id", "teachersandsubjects", 
-                    "WHERE c_id = ".$_GET["cl"]." AND s_id = ".$_POST["group_subject_$num"])[0]
-                );
-
+                $are_teachers_different = checkIfTeachersAreDifferent($num);
+                
                 $is_cabinet_free = true;
 
                 for($cabinet_index=1; $cabinet_index <= 3; $cabinet_index++)
@@ -79,20 +89,19 @@
                     }
                 }
 
-                $current_cabinet_data = 
-                    selectData("tt_num_lesson, tt_day_id, tt_class_id", "timetable", 
+                $current_cabinet_data = selectData("tt_num_lesson, tt_day_id, tt_class_id", "timetable", 
                     "WHERE tt_num_lesson = ".$_GET["group"]." 
                     AND tt_cabinet_id = ".$_POST["group_cabinets_$num"])[0];
 
-                if($is_cabinet_free && mysqli_affected_rows($GLOBALS["link"]) == 0)
+                if($is_cabinet_free && mysqli_affected_rows($GLOBALS["link"]) == 0 && $are_teachers_different == true)
                 {
-                    echo insertData("timetable", 
+                    insertData("timetable", 
                         "tt_day_id, tt_num_lesson, tt_chys_znam, 
                         tt_permanent, tt_subject_id, tt_class_id, 
                         tt_id_teach, tt_cabinet_id, group_id, group_number", 
                         $_GET["day"].", ".$_GET["group"].", 0, 
                         1, ".$_POST["group_subject_$num"].", ".$_GET["cl"].", 
-                        $teacher_id, ".$_POST["group_cabinets_$num"].", ".$_GET["group"].", $num");
+                        ".$_POST["group_teachers_$num"].", ".$_POST["group_cabinets_$num"].", ".$_GET["group"].", $num");
                 }
                 else
                 {

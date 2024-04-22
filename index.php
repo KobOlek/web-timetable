@@ -87,7 +87,7 @@
                 $is_something = 0;
 
                 echo "<tr>";
-                echo "<td>";
+                echo "<td width='4%'>";
                 echo $num;
                 echo "</td>";
                 
@@ -160,7 +160,7 @@
                     
                         if($cab_num != "")
                         {
-                            echo "<td>";
+                            echo "<td width='5%'>";
                             echo $cab_num;
                             echo "</td>";
                         }
@@ -194,7 +194,7 @@
                 if(mysqli_affected_rows($GLOBALS["link"]) > 0)
                 {
                     $is_something = 1;
-                    echo "<td>";
+                    echo "<td width='5%'>";
                     while($group_data1=mysqli_fetch_array($cabinetGroupClassData))
                     {
                         list($group_cab_num) = mysqli_fetch_array(
@@ -210,7 +210,7 @@
                 echo "</td>";
 
                 if($is_something == 0)
-                    echo "<td></td>";
+                    echo "<td width='5%'></td>";
 
                 echo "</tr>";
             }
@@ -218,11 +218,11 @@
             $days = ["Понеділок", "Вівторок", "Середа", "Четвер", "П'ятниця"];
             if(isset($_GET["classId"]))
             {
-                echo "<div width=100% style='display: flex; align-items: space-evenly; flex-direction: column;'>";
-                echo "<div width=100% style='display: flex; justify-content: space-around;'>";
-                for($day_id=0; $day_id < count($days)-2; $day_id++)
+                echo "<div style='display: flex; justify-content: center;'>";
+                echo "<div>";
+                for($day_id=0; $day_id < count($days); $day_id++)
                 {
-                    echo "<table border='1' width=100%>  
+                    echo "<table border='1' width='450px'>  
                     <caption>".$days[$day_id]."</caption>";
                     for($num=1; $num <= 8; $num++)
                     {
@@ -231,18 +231,6 @@
                     echo "</table>";
                 }
                 echo "</div>";
-                echo "<div style='display: flex;'>";
-                for($day_id=count($days)-2; $day_id < count($days); $day_id++)
-                {
-                    echo "<table border='1' width=100%>  
-                    <caption>".$days[$day_id]."</caption>";
-                    for($num=1; $num <= 8; $num++)
-                    {
-                        fillDay($day_id, $num);
-                    }
-                    echo "</table>";
-                    
-                }
                 echo "</div>";
             }   
         }

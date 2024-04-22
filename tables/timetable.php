@@ -65,31 +65,52 @@
         if(isset($_POST["save_button"]))
         {
             deleteData("timetable", "WHERE tt_class_id = ".$_GET["cl"]." AND tt_day_id = ".$_GET["day"]." AND group_id = 0");
+
             for($num=1; $num < 9; $num++)
             {
-                // if(isset($_POST["chyselnyk_".$num])){
-                //     //echo $_POST["chyselnyk_".$num];
-                // }
-                // if(isset($_POST["znamennyk_".$num])){
-                //     //echo $_POST["znamennyk_".$num];
-                //     //$k=1;
-                // }
                 if(isset($_POST["permanent_".$num]) && isset($_POST["subject_chyselnyk_".$num."_1"])){
-                   echo $_POST["permanent_".$num];
+                   //echo $_POST["permanent_".$num];
                    //echo $_POST["subject_chyselnyk_".$num."_1"];
-                   if($_POST["permanent_".$num] != "-" && $_POST["subject_chyselnyk_".$num."_1"] != "-"){
-                        getHours($num, 0, 1);
+                    if($_POST["permanent_".$num] != "-" && $_POST["subject_chyselnyk_".$num."_1"] != "-")
+                    {
+                        list($teacher_id) = mysqli_fetch_array(
+                            selectData("t_id", "teachersandsubjects", 
+                            "WHERE c_id = ".$_GET["cl"]." AND s_id = ".$_POST["subject_chyselnyk_".$num."_1"])[0]
+                        );
+
+                        list($amount_of_occupied_hours) = mysqli_fetch_array(
+                            selectData("COUNT(*)", "timetable", 
+                            "WHERE tt_id_teach = $teacher_id")[0]);
+                            
+                        list($work_hours) = mysqli_fetch_array(
+                            selectData("work_hours", "teachers", "WHERE t_id = $teacher_id")[0]
+                        );
+                        
+                        if($amount_of_occupied_hours < $work_hours)
+                            getHours($num, 0, 1);
+                        else
+                            echo "Не знущайтесь над своїм працівником! Він теж хоче відпочити!(Забагато годин)";
                     }
 
                 }
                 if(isset($_POST["subject_chyselnyk_".$num."_1"]) && isset($_POST["chyselnyk_".$num])){
-                    if($_POST["subject_chyselnyk_".$num."_1"] != "-"){
+                    if($_POST["subject_chyselnyk_".$num."_1"] != "-")
+                    {
                         //echo $_POST["subject_chyselnyk_".$num."_1"];
                         list($teacher_id) = mysqli_fetch_array(
                             selectData("t_id", "teachersandsubjects", 
                             "WHERE c_id = ".$_GET["cl"]." AND s_id = ".$_POST["subject_chyselnyk_".$num."_1"])[0]
                         );
                         //-----------------------------------------------------------------------------------------------------------------
+                        //checking limit teacher hours
+                        list($amount_of_occupied_hours) = mysqli_fetch_array(
+                            selectData("COUNT(*)", "timetable", 
+                            "WHERE tt_id_teach = $teacher_id")[0]);
+                            
+                        list($work_hours) = mysqli_fetch_array(
+                            selectData("work_hours", "teachers", "WHERE t_id = $teacher_id")[0]
+                        );
+                        
                         //choosing hours of subject
                         list($subject_hours) =  mysqli_fetch_array(
                             selectData(
@@ -106,29 +127,39 @@
                         );
                         //-----------------------------------------------------------------------------------------------------------------
                        
-                        list($check_class_id, $check_lesson_number, $check_chys_znam, $check_permanent) = mysqli_fetch_array(
-                            selectData(
-                                "tt_class_id, tt_num_lesson, tt_chys_znam, tt_permanent", "timetable",
-                                "WHERE tt_num_lesson = $num AND tt_chys_znam = 0 AND tt_permanent = 1 AND tt_id_teach = $teacher_id AND group_id != 0"
-                            )[0]                         
-                        );
-                            
-                        if(mysqli_affected_rows($GLOBALS["link"]) == 0){
-                            //echo $subject_hours."/".$inserted_subject_hours." ";
-                            if($inserted_subject_hours < $subject_hours){
-                               
-                                echo insertData("timetable", 
-                                    "tt_day_id, tt_num_lesson, tt_chys_znam, 
-                                    tt_permanent, tt_subject_id, tt_class_id, tt_id_teach, tt_cabinet_id",
-                                    $_GET["day"].", $num, 
-                                    1, 0, ".$_POST["subject_chyselnyk_".$num."_1"].", ".$_GET["cl"].", 
-                                    ".$teacher_id.", ".$_POST["chys_cabinets_".$num]);
+                        if($amount_of_occupied_hours < $work_hours) //if work hours didn't exceed occupied hours 
+                        {
+                            list($check_class_id, $check_lesson_number, $check_chys_znam, $check_permanent) = mysqli_fetch_array(
+                                selectData(
+                                    "tt_class_id, tt_num_lesson, tt_chys_znam, tt_permanent", "timetable",
+                                    "WHERE tt_num_lesson = $num AND tt_chys_znam = 0 AND tt_permanent = 1 AND tt_id_teach = $teacher_id AND group_id != 0"
+                                )[0]                         
+                            );
+                                
+                            if(mysqli_affected_rows($GLOBALS["link"]) == 0)
+                            {
+                                //echo $subject_hours."/".$inserted_subject_hours." ";
+                                if($inserted_subject_hours < $subject_hours)
+                                {
+                                    insertData("timetable", 
+                                        "tt_day_id, tt_num_lesson, tt_chys_znam, 
+                                        tt_permanent, tt_subject_id, tt_class_id, tt_id_teach, tt_cabinet_id",
+                                        $_GET["day"].", $num, 
+                                        1, 0, ".$_POST["subject_chyselnyk_".$num."_1"].", ".$_GET["cl"].", 
+                                        ".$teacher_id.", ".$_POST["chys_cabinets_".$num]);
 
-                            }else{
-                                echo "Не знущайтесь над $check_class_id класом! Вони вже мають достатньо цей урок";
+                                }
+                                else{
+                                    echo "Не знущайтесь над $check_class_id класом! Вони вже мають достатньо цей урок";
+                                }
                             }
-                        }else{
-                            echo "Не знущайтесь над людиною! Вона вже має $check_lesson_number урок у <b>$check_class_id</b>";
+                            else{
+                                echo "Не знущайтесь над людиною! Вона вже має $check_lesson_number урок у <b>$check_class_id</b>";
+                            }
+                        }
+                        else
+                        {
+                            echo "Не знущайтесь над своїм працівником! Він теж хоче відпочити!(Забагато годин)";
                         }
                     }
                 }
