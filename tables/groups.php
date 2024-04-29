@@ -78,6 +78,7 @@
             if($_POST["group_subject_$num"] != "-" && $_POST["group_cabinets_$num"] != 0){
                 $are_teachers_different = checkIfTeachersAreDifferent($num);
                 
+
                 $is_cabinet_free = true;
 
                 for($cabinet_index=1; $cabinet_index <= 3; $cabinet_index++)
