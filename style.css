@@ -1,0 +1,16 @@
+.initials-avatar {
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    vertical-align: middle;
+    border-radius: 50%;
+    line-height: 1;
+    background: grey;
+    color: white;
+}
+.initials-avatar.large {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+}

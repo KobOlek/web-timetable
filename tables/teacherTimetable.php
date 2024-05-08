@@ -44,6 +44,7 @@
                     <td>".$teachersArray["t_id"]."</td>
                     <td>".$teachersArray["t_fullname"]."</td>
                     <td>".$teachersArray["t_email"]."</td>";
+
                 for($i_day=1; $i_day <= 5; $i_day++)
                 {
                     for($num_lesson=1; $num_lesson <= 8; $num_lesson++)
