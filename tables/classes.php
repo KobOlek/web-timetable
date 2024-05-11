@@ -1,5 +1,4 @@
 <?php
-    include("functions.php");
     if(isset($_POST["submit_button"])){
         if(isset($_POST["name_input"])){
             $name = $_POST["name_input"];
@@ -47,18 +46,18 @@
                 echo "
                 <tr>
                     <td>
-                        <a href=".$_SERVER["PHP_SELF"]."?tb=3&edit=".$subjectsArray["c_id"].">edit</a> 
+                        <a href=".$_SERVER["PHP_SELF"]."?menu=admin&tb=3&edit=".$subjectsArray["c_id"].">edit</a> 
                     </td>
                     <td>".$subjectsArray["c_id"]."</td><td>".$subjectsArray["c_name"]."</td>";
                 echo "
                 <td>
-                    <a href=".$_SERVER["PHP_SELF"]."?tb=5&class=".$subjectsArray["c_id"].">Змінити предмети</a>
+                    <a href=".$_SERVER["PHP_SELF"]."?menu=admin&tb=5&class=".$subjectsArray["c_id"].">Змінити предмети</a>
                 </td>
                 <td>
-                    <a href=".$_SERVER["PHP_SELF"]."?tb=6&class=".$subjectsArray["c_id"].">Перепризначити вчителя</a>
+                    <a href=".$_SERVER["PHP_SELF"]."?menu=admin&tb=6&class=".$subjectsArray["c_id"].">Перепризначити вчителя</a>
                 </td>
                 <td>
-                    <a href=".$_SERVER["PHP_SELF"]."?tb=8&cl=".$subjectsArray["c_id"].">Сформувати розклад</a>
+                    <a href=".$_SERVER["PHP_SELF"]."?menu=admin&tb=8&cl=".$subjectsArray["c_id"].">Сформувати розклад</a>
                 </td>
                 ";
                 echo "</tr>";

@@ -1,5 +1,4 @@
 <?php
-    include("functions.php");
     if(isset($_POST["submit_button"])){
         if(isset($_POST["fullname_input"]) && isset($_POST["contact_input"])){
             $name = $_POST["fullname_input"];
@@ -69,13 +68,13 @@
                 echo "
                 <tr>
                     <td>
-                        <a href=".$_SERVER["PHP_SELF"]."?tb=1&edit=".$teachersArray["t_id"].">edit</a> 
+                        <a href=".$_SERVER["PHP_SELF"]."?menu=admin&tb=1&edit=".$teachersArray["t_id"].">edit</a> 
                     </td>
                     <td>".$teachersArray["t_id"]."</td><td>".$teachersArray["t_fullname"]."</td><td>".$teachersArray["work_hours"]."</td>
                     <td>".$amount_of_occupied_hours."</td>
                     <td>".$teachersArray["t_email"]."</td>
                     <td>
-                        <a href=".$_SERVER["PHP_SELF"]."?tb=7&t_id=".$teachersArray["t_id"].">Change discipline</a>
+                        <a href=".$_SERVER["PHP_SELF"]."?menu=admin&tb=7&t_id=".$teachersArray["t_id"].">Change discipline</a>
                     </td>";
                 echo "</tr>";
             }

@@ -9,11 +9,11 @@ include("config.php");
           <ul class="nav nav-pills bd-highlight flex-grow-1">
             <li class="mr-auto bd-highlight"><a href="index.php" class="nav-link active" aria-current="page">Домашня</a></li>
             <li style="visibility: hidden;">//</li>
-            <li class="mr-auto bd-highlight"><a href="admin.php" class="nav-link active" aria-current="page">Адмінка розкладу</a></li>
+            <li class="mr-auto bd-highlight"><a href="?menu=admin" class="nav-link active" aria-current="page">Адмінка розкладу</a></li>
             <li style="visibility: hidden;">//</li>
-            <li class="mr-auto bd-highlight"><a href="tables/teacherTimetable.php" class="nav-link active" aria-current="page">Розклад для вчителів</a></li>
+            <li class="mr-auto bd-highlight"><a href="?menu=teacherTimetable" class="nav-link active" aria-current="page">Розклад для вчителів</a></li>
             <li style="visibility: hidden;">//</li>
-            <li class="mr-auto bd-highlight"><a href="" class="nav-link active" aria-current="page">Учні</a></li>
+            <li class="mr-auto bd-highlight"><a href="?menu=students" class="nav-link active" aria-current="page">Учні</a></li>
           </ul>
           <?php
           if(!empty($resres)) {
@@ -30,7 +30,7 @@ include("config.php");
             </a>
             <form method="POST" id="DropDown">
             <ul class="dropdown-menu text-small" style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate(0px, 34px);" data-popper-placement="bottom-start">
-              <li><a class="dropdown-item" href="cabinet.php">Мій кабінет</a></li>
+              <li><a class="dropdown-item" href="auth/cabinet.php">Мій кабінет</a></li>
               <li><hr class="dropdown-divider"></li>
               <li><button type="submit" name="logout" class="btn btn-outline-primary me-2 mx-2">Вийти</button></li>
             </ul>
@@ -46,15 +46,19 @@ include("config.php");
       </div>
     </header>
     <main>
-        <h1>
-            <?php
-                // if(!empty($resres)) {
-                //     echo "<h1>перегляд сторінки за учня</h1>";
-                // } else {
-                //     echo "<h1>перегляд сторінки за гостя</h1>";
-                // }
-            ?>
-        </h1>
+          <?php
+            $teacherTimetable = 
+            [
+              "admin" => "admin.php",
+              "teacherTimetable" => "tables/teacherTimetable.php",
+              "students" => "students/index.php",
+              "infostud" => "students/stud.php"
+            ];
+            if(isset($_GET["menu"]))
+            {
+              include($teacherTimetable[$_GET["menu"]]);
+            }
+          ?>
     </main>
     <!-- <script src="js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>             -->
   </body>

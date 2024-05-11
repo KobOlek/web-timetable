@@ -17,16 +17,16 @@
                 <a href="index.php">Головна</a>
             </th>
             <th>
-                <a href="?tb=1">Викладачі</a>
+                <a href="?menu=admin&tb=1">Викладачі</a>
             </th>
             <th>
-                <a href="?tb=2">Предмети</a>
+                <a href="?menu=admin&tb=2">Предмети</a>
             </th>
             <th>
-                <a href="?tb=3">Класи</a>
+                <a href="?menu=admin&tb=3">Класи</a>
             </th>
             <th>
-                <a href="?tb=4">Кабінети</a>
+                <a href="?menu=admin&tb=4">Кабінети</a>
             </th>
         </tr>
         <tr>

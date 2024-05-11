@@ -1,5 +1,4 @@
 <?php
-    include("functions.php");
     if(isset($_POST["submit_button"])){
         if(isset($_POST["name_input"]) && isset($_POST["comment_input"])){
             $name = $_POST["name_input"];
@@ -61,7 +60,7 @@
                 echo "
                 <tr>
                     <td>
-                        <a href=".$_SERVER["PHP_SELF"]."?tb=2&edit=".$subjectsArray["s_id"].">edit</a> 
+                        <a href=".$_SERVER["PHP_SELF"]."?menu=admin&tb=2&edit=".$subjectsArray["s_id"].">edit</a> 
                     </td>
                     <td>".$subjectsArray["s_id"]."</td><td>".$subjectsArray["s_name"]."</td><td>".$subjectsArray["s_comment"]."</td>";
                 echo "</tr>";

@@ -1,7 +1,5 @@
 <form method='post' action="">
     <?php
-        include("functions.php");
-
         //-----------------------------------------------------------------------------------------------------------------
         
         function getHours($num, $chys_znam_value, $permanent_value){
@@ -224,14 +222,14 @@
             $d = ["Понеділок", "Вівторок", "Середа", "Четвер", "П'ятниця"];
             
             for ($j=0; $j < count($d); $j++) { 
-                echo "<a href='?tb=".$_GET["tb"]."&cl=".$_GET["cl"]."&day=".($j+1)."'>";
+                echo "<a href='?menu=admin&tb=".$_GET["tb"]."&cl=".$_GET["cl"]."&day=".($j+1)."'>";
                 echo $d[$j]."</a> | ";
             }
             
             if(isset($_GET["day"]))
             {
                 echo "<br>";
-                echo "<a href='?tb=".$_GET["tb"]."&cl=".$_GET["cl"]."&day=".$_GET["day"]."&need_check=1'>Перевірка</a>";
+                echo "<a href='?menu=admin&tb=".$_GET["tb"]."&cl=".$_GET["cl"]."&day=".$_GET["day"]."&need_check=1'>Перевірка</a>";
             }
             
             if(isset($_GET["day"])){
@@ -467,7 +465,7 @@
                  
                    //  Початок роботи з групами------------------------------------------------------------------------------
                    echo "<td>
-                            <a href='?tb=".$_GET["tb"]."&cl=".$_GET["cl"]."&day=".$_GET["day"]."&group=$num'>Перейти до груп</a>
+                            <a href='?menu=admin&tb=".$_GET["tb"]."&cl=".$_GET["cl"]."&day=".$_GET["day"]."&group=$num'>Перейти до груп</a>
                         </td>";
                     echo "<td>";
                         $group_lessons = selectData("tt_subject_id, tt_cabinet_id", "timetable", "WHERE tt_num_lesson = $num 

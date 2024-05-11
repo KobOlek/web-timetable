@@ -1,7 +1,5 @@
 <form method="post" id="form"> 
     <?php
-        include("functions.php");
-
         if(isset($_POST["save_button"])){
             deleteData("teachersandsubjects", "WHERE c_id = ".$_GET["class"]);
     

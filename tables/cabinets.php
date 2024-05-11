@@ -1,7 +1,3 @@
-<?php
-    include("functions.php");
-?>
-
 <form action="" method="post" class="edit-form">
     <?php
         if(isset($_POST["edit_button"])){
@@ -63,7 +59,7 @@
                 echo "
                 <tr>
                     <td>
-                        <a href=".$_SERVER["PHP_SELF"]."?tb=4&edit=".$cabinetsArray["cab_id"].">edit</a> 
+                        <a href=".$_SERVER["PHP_SELF"]."?menu=admin&tb=4&edit=".$cabinetsArray["cab_id"].">edit</a> 
                     </td>
                     <td>".$cabinetsArray["cab_id"]."</td><td>".$cabinetsArray["cab_name"]."</td>
                     <td>".$cabinetsArray["cab_num"]."</td>";

@@ -1,6 +1,4 @@
 <?php
-    include("functions.php");
-
     if(isset($_GET["t_id"])){
         list($class_name) = mysqli_fetch_array(selectData("t_fullname", "teachers", "WHERE t_id = ".$_GET["t_id"])[0]);
         echo $class_name;

@@ -1,16 +1,13 @@
 <title>Розклад вчителів</title>
 <?php
-    include("functions.php");
-    include("../config.php");
+    include("config.php");
     $result_array = selectData("*", "teachers")[0];
 ?>
 <div>
+    <h1>
+        Розклад вчителів
+    </h1>
     <table border='1'>
-        <caption>
-            <h1>
-                Розклад вчителів
-            </h1>
-        </caption>
         <tr>
             <th rowspan='2'>#</th>
             <th rowspan='2'>ПІБ</th>
