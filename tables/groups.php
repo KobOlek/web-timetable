@@ -127,7 +127,7 @@
 ?>
 
 <p>
-    <table border='1'>
+    <table  class="table table-striped" border='1'>
         <tr>
             <th></th>
             <th>Група 1</th>

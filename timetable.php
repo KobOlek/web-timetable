@@ -1,6 +1,6 @@
 <div style="text-align: center;">
         <h3>Оберіть номер класу</h3>
-        <table align="center" width="900px" border='1'>
+        <table  class="table table-striped" align="center" width="900px" border='1'>
             <tr>
                 <?php
                     for($class_number=$first_class_number; $class_number <= $last_class_number; $class_number++)
@@ -40,7 +40,7 @@
         ?>
             <div style="text-align: center;">
                 <h3>Знайдено такі класи</h3>
-                <table align="center" width="900px" border='1'>
+                <table  class="table table-striped" align="center" width="900px" border='1'>
                     <tr>
                         <?php
                             $class_names = selectData("c_id, c_name", "classes", "WHERE c_name LIKE '%".$_GET['class']."%'")[0];
@@ -207,7 +207,7 @@
                 for($day_id=0; $day_id < count($days); $day_id++)
                 {
                     echo "<h4>".$days[$day_id]."</h4>";
-                    echo "<table border='1' width='450px'>";
+                    echo "<table  class='table table-striped' border='1' width='450px'>";
                     for($num=1; $num <= 8; $num++)
                     {
                         fillDay($day_id, $num);

@@ -47,7 +47,7 @@
     $result_array = selectData("*", "cabinets")[0];
 ?>
 <div>
-    <table border='1'>
+    <table class="table table-striped" border='1'>
         <tr>
             <th>Edit</th>
             <th>Id</th>

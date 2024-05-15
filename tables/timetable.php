@@ -240,7 +240,7 @@
                     include("groups.php");
                     echo "</div>";
                 }
-                echo "<table border='1'>
+                echo "<table  class='table table-striped' border='1'>
                     <tr>
                         <th>Номер уроку</th>
                         <th><abbr title='Чисельник/знаменник'>Ч/з</abbr></th>

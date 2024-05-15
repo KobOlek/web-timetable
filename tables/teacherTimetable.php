@@ -7,7 +7,7 @@
     <h1>
         Розклад вчителів
     </h1>
-    <table border='1'>
+    <table  class="">
         <tr>
             <th rowspan='2'>#</th>
             <th rowspan='2'>ПІБ</th>

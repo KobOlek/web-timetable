@@ -27,6 +27,12 @@ include("config.php");
     </div>
 
     </div>
+    <select class="form-select" name="user_type_select" id="">
+      <option value="0">Не вибрано(Натисни нище)</option>
+      <option value="2">Учень</option>
+      <option value="3">Вчитель</option>
+      <option value="1">Admin</option>
+    </select>
     <button class="btn btn-primary w-100 py-2" type="submit">Увійти!</button>
   </form>
 </main>
@@ -40,7 +46,7 @@ include("config.php");
         if(isset($_POST['login'])) {
             $login = $_POST['login'];
         }
-        $sql_insert = "SELECT * FROM users WHERE us_email = '".$login."' AND us_password = '".md5(md5($password))."'";
+        $sql_insert = "SELECT * FROM users WHERE us_user_type = ".$_POST["user_type_select"]." AND us_email = '".$login."' AND us_password = '".md5(md5($password))."'";
         $result = $mysqli->query($sql_insert);
         $resres = $result->fetch_row();
         if(empty($resres)!=1) {
@@ -51,7 +57,7 @@ include("config.php");
             header("Location: ../index.php");
         }
         else {
-          echo "<h1>Невірний пароль!</h1>";
+          echo "<h2>Невірний дані входу!</h2>";
         } 
       }
     ?>

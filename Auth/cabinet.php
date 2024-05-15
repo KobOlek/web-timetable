@@ -15,18 +15,25 @@ if(array_key_exists('logout', $_POST)) {
     $mysqli->query($sql_insert);
     session_unset();
     session_destroy();
-    header("Location:index.php");
+    header("Location: ../index.php");
 }
 if(array_key_exists("change_pass", $_POST)) {
   $sql_insert = "UPDATE users SET us_password ='".(md5(md5($_POST['password'])))."' WHERE us_email = ".$_SESSION['us_email'];
   $mysqli->query($sql_insert);
+
+  $sql_insert = "DELETE FROM sessions WHERE us_email='".$_SESSION['us_email']."'";
+  $mysqli->query($sql_insert);
+  session_unset();
+  session_destroy();
+  header("Location: ../index.php");
 }
 if(array_key_exists("change-theme", $_POST)) {
     $_SESSION['dark-theme'] = $_POST['dark-theme'];
     $_SESSION['dark-checked'] = ($_POST["dark-theme"] == "dark") ? "yes": "no";
+    header("Location: ../index.php");
 }
 }else {
-  header("Location:index.php");
+  header("Location: ../index.php");
 };
 ?>
 <!DOCTYPE html>
@@ -37,15 +44,15 @@ echo "<html lang='en' data-bs-theme='".$_SESSION['dark-theme']."'>"
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Кабінет</title>
-    <link href="style.css" rel="stylesheet">
-    <link href="css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="../style.css" rel="stylesheet">
+    <link href="../css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 </head>
 <body>
 <header class="p-3 mb-3 border-bottom">
       <div class="container" style="width:100%">
         <div class="d-flex flex-wrap align-items-left justify-content-left justify-content-lg-end">
           <ul class="nav nav-pills bd-highlight flex-grow-1">
-            <li class="mr-auto bd-highlight"><a href="index.php" class="nav-link active" aria-current="page">Домашня</a></li>
+            <li class="mr-auto bd-highlight"><a href="../index.php" class="nav-link active" aria-current="page">Домашня</a></li>
           </ul>
           <?php
           if(!empty($resres)) {

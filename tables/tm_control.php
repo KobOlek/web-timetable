@@ -1,10 +1,10 @@
 <?php
     $class_hours = selectData("sc.s_id AS sc_s_id, s_name, sc_hours_count", "subjectsandclasses sc, subjects s", "WHERE sc.s_id = s.s_id AND sc.c_id=".$_GET["cl"])[0];
 ?>
-<table>
+<table  class="table">
     <tr>
     <td valign="top">
-        <table border='1'>
+        <table  class="table table-striped" border='1'>
             <caption>Години</caption>
             <tr>
                 <th>Предмет</th>
@@ -32,7 +32,7 @@
     </td>
     <td style="width: 100px;"></td>
     <td valign="top">
-        <table border='1'>
+        <table  class="table table-striped" border='1'>
             <caption>Кабінети</caption>
             <tr>
                 <td></td>

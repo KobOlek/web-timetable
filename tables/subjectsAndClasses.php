@@ -25,7 +25,7 @@
     <?php
         if(isset($_GET["class"])){
             echo '<input class="form-button" name="save_button" type="submit" value="Save"><br>';
-            echo "<table style='margin: 0 auto;' border='1'>
+            echo "<table  class='table table-striped' style='margin: 0 auto;' border='1'>
                 <tr>    
                     <th>#</th>
                     <th>Назва предмету</th>
