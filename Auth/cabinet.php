@@ -1,6 +1,7 @@
 <?php
 include("config.php");
 include("funcs/avatar.php");
+
 session_start();
 if(!isset($_SESSION['dark-theme'])) {
   $_SESSION['dark-theme'] = 'light';
@@ -56,13 +57,17 @@ echo "<html lang='en' data-bs-theme='".$_SESSION['dark-theme']."'>"
           </ul>
           <?php
           if(!empty($resres)) {
-              $table_name = $user_type == 3 ? "stud" : ($user_type == 2 ? "teachers" : "student");
-              $id_name =  $user_type == 3 ? "st_id" : ($user_type == 2 ? "t_id" : "s_us_id");
+            $sql_init = "SELECT us_user_type FROM users WHERE us_email = ".$_SESSION['us_email'];
+            $query = $mysqli->query($sql_init);
+            $user_type = $query->fetch_row()[0];
 
-              $sql_init = "SELECT * FROM $table_name WHERE $id_name = '".$_SESSION['us_email']."'";
-              $query = $mysqli->query($sql_init);
-              $result = $query->fetch_row()[1];
-              echo '
+            $table_name = $user_type == 3 ? "stud" : ($user_type == 2 ? "teachers" : "student");
+            $id_name =  $user_type == 3 ? "st_id" : ($user_type == 2 ? "t_id" : "s_us_id");
+
+            $sql_init = "SELECT * FROM $table_name WHERE $id_name = ".$_SESSION['us_email'];
+            $query = $mysqli->query($sql_init);
+            $result = $query->fetch_row()[1];
+            echo '
           <div class="dropdown text-end">
             <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle show" data-bs-toggle="dropdown" aria-expanded="true">
               <div class="initials-avatar large" 
