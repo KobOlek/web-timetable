@@ -56,7 +56,10 @@ echo "<html lang='en' data-bs-theme='".$_SESSION['dark-theme']."'>"
           </ul>
           <?php
           if(!empty($resres)) {
-              $sql_init = "SELECT * FROM student WHERE s_us_id = '".$_SESSION['us_email']."'";
+              $table_name = $user_type == 3 ? "stud" : ($user_type == 2 ? "teachers" : "student");
+              $id_name =  $user_type == 3 ? "st_id" : ($user_type == 2 ? "t_id" : "s_us_id");
+
+              $sql_init = "SELECT * FROM $table_name WHERE $id_name = '".$_SESSION['us_email']."'";
               $query = $mysqli->query($sql_init);
               $result = $query->fetch_row()[1];
               echo '

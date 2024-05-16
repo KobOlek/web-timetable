@@ -7,17 +7,36 @@ include("config.php");
       <div class="container" style="width:100%">
         <div class="d-flex flex-wrap align-items-left justify-content-left justify-content-lg-end">
           <ul class="nav nav-pills bd-highlight flex-grow-1">
-            <li class="mr-auto bd-highlight"><a href="index.php" class="nav-link active" aria-current="page">Домашня</a></li>
-            <li style="visibility: hidden;">//</li>
-            <li class="mr-auto bd-highlight"><a href="?menu=admin" class="nav-link active" aria-current="page">Адмінка розкладу</a></li>
-            <li style="visibility: hidden;">//</li>
-            <li class="mr-auto bd-highlight"><a href="?menu=teacherTimetable" class="nav-link active" aria-current="page">Розклад для вчителів</a></li>
-            <li style="visibility: hidden;">//</li>
-            <li class="mr-auto bd-highlight"><a href="?menu=students" class="nav-link active" aria-current="page">Учні</a></li>
+            <?php
+              $visible_buttons = 
+              [
+                1 => '<li class="mr-auto bd-highlight"><a href="index.php" class="nav-link active" aria-current="page">Домашня</a></li>
+                <li style="visibility: hidden;">//</li>
+                <li class="mr-auto bd-highlight"><a href="?menu=admin" class="nav-link active" aria-current="page">Адмінка розкладу</a></li>
+                <li style="visibility: hidden;">//</li>
+                <li class="mr-auto bd-highlight"><a href="?menu=teacherTimetable" class="nav-link active" aria-current="page">Розклад для вчителів</a></li>
+                <li style="visibility: hidden;">//</li>
+                <li class="mr-auto bd-highlight"><a href="?menu=students" class="nav-link active" aria-current="page">Учні</a></li>',
+                
+                2 => '<li class="mr-auto bd-highlight"><a href="index.php" class="nav-link active" aria-current="page">Домашня</a></li>
+                <li style="visibility: hidden;">//</li>
+                <li class="mr-auto bd-highlight"><a href="?menu=teacherTimetable" class="nav-link active" aria-current="page">Розклад для вчителів</a></li>
+                <li style="visibility: hidden;">//</li>',
+                
+                3 => '<li class="mr-auto bd-highlight"><a href="index.php" class="nav-link active" aria-current="page">Домашня</a></li>
+                <li style="visibility: hidden;">//</li>'
+              ];
+
+              list($user_type) = mysqli_fetch_array(selectData("us_user_type", "users", "WHERE us_email = ".$_SESSION["us_email"])[0]);
+              echo $visible_buttons[$user_type];
+            ?>
           </ul>
           <?php
           if(!empty($resres)) {
-              $sql_init = "SELECT * FROM student WHERE s_us_id = '".$_SESSION['us_email']."'";
+              $table_name = $user_type == 3 ? "stud" : ($user_type == 2 ? "teachers" : "student");
+              $id_name =  $user_type == 3 ? "st_id" : ($user_type == 2 ? "t_id" : "s_us_id");
+
+              $sql_init = "SELECT * FROM $table_name WHERE $id_name = ".$_SESSION['us_email'];
               $query = $mysqli->query($sql_init);
               $result = $query->fetch_row()[1];
               echo '
