@@ -86,13 +86,13 @@
                     if($_POST["group_cabinets_$cabinet_index"] != 0 && $num != $cabinet_index)
                     {
                         $is_cabinet_free = $_POST["group_cabinets_$num"] != $_POST["group_cabinets_$cabinet_index"];
-                        echo "<br>".$_POST["group_cabinets_$num"]."<br>";
+                        //echo "<br>".$_POST["group_cabinets_$num"]."<br>";
                     }
                 }
 
                 $current_cabinet_data = selectData("tt_num_lesson, tt_day_id, tt_class_id", "timetable", 
                     "WHERE tt_num_lesson = ".$_GET["group"]." 
-                    AND tt_cabinet_id = ".$_POST["group_cabinets_$num"])[0];
+                    AND tt_cabinet_id = ".$_POST["group_cabinets_$num"]." AND tt_day_id = ".$_GET["day"])[0];
 
                 if($is_cabinet_free && mysqli_affected_rows($GLOBALS["link"]) == 0 && $are_teachers_different == true)
                 {
@@ -223,7 +223,7 @@
                     {
                         list($cabinetNumber) = mysqli_fetch_array(
                             selectData("cab_num", "cabinets", "WHERE cab_id = ".$group_cabinet)[0]); 
-                        echo "<option value=".$group_cabinet." selected>".$group_cabinet." ".$cabinetNumber."</option>";
+                        echo "<option value=".$group_cabinet." selected>".$cabinetNumber."</option>";
                     }
 
                     // $cabinets = selectData("cab_id, cab_num", "cabinets", 
@@ -231,7 +231,7 @@
                     $cabinets = selectData("cab_id, cab_num", "cabinets")[0];
                     while($cabinetsArray = mysqli_fetch_array($cabinets))
                     {
-                        echo "<option value=".$cabinetsArray["cab_id"].">".$cabinetsArray["cab_id"]." ".$cabinetsArray["cab_num"]."</option>";
+                        echo "<option value=".$cabinetsArray["cab_id"].">".$cabinetsArray["cab_num"]."</option>";
                     }
 
                     echo "</select>";

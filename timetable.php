@@ -84,7 +84,7 @@
                 if(mysqli_affected_rows($GLOBALS["link"]) > 0)
                 {
                     //echo "<td>";
-                    $isLine = " / <br>";
+                    $isLine = "<br> / <br>";
                     while($class_data=mysqli_fetch_array($classData))
                     {
                         $is_something = 1;

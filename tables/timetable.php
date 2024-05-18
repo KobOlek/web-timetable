@@ -255,7 +255,7 @@
                   //чисельник-------------------------------
                     $data = selectData("tt_num_lesson, tt_chys_znam, tt_permanent, tt_subject_id, tt_cabinet_id", 
                         "timetable", "WHERE tt_chys_znam != 2 AND tt_num_lesson = $num AND 
-                        tt_class_id = ".$_GET["cl"]." AND tt_day_id = ".$_GET["day"])[0];
+                        tt_class_id = ".$_GET["cl"]." AND tt_day_id = ".$_GET["day"]." AND group_id = 0")[0];
                     list($num_lesson, $tt_chys, $permanent, $subject_id_chys, $tt_cabinet_id_chys) = 
                         mysqli_fetch_array($data);
                     
@@ -429,9 +429,9 @@
                     }
                         
                     
-                    $cabinets = selectData("cab_id, cab_num", "cabinets", 
-                    "WHERE cab_id NOT IN(SELECT DISTINCT tt_cabinet_id FROM timetable WHERE tt_num_lesson = $num AND tt_chys_znam != 2)")[0];
-                    //$cabinets = selectData("cab_id, cab_num", "cabinets")[0];
+                    // $cabinets = selectData("cab_id, cab_num", "cabinets", 
+                    // "WHERE cab_id NOT IN(SELECT DISTINCT tt_cabinet_id FROM timetable WHERE tt_num_lesson = $num AND tt_chys_znam != 2)")[0];
+                    $cabinets = selectData("cab_id, cab_num", "cabinets")[0];
                     while($cabinetsArray = mysqli_fetch_array($cabinets))
                     {
                         echo "<option value=".$cabinetsArray["cab_id"].">".$cabinetsArray["cab_num"]."</option>";

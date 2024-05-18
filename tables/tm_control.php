@@ -18,8 +18,8 @@
                     "WHERE tt_class_id=".$_GET["cl"]." AND tt_subject_id = ".$hours["sc_s_id"]." AND group_id = 0")[0];
                     list($subject_hours)=mysqli_fetch_array($count_subjects_hours);
 
-                    $cell_color = $subject_hours == $hours["sc_hours_count"] ? "lime" : "white";
-                    $text_color = $subject_hours == $hours["sc_hours_count"] ? "darkgreen" : "black";
+                    $cell_color = $subject_hours == $hours["sc_hours_count"] ? "#0D2C01" : "white";
+                    $text_color = $subject_hours == $hours["sc_hours_count"] ? "#3EB60F" : "black";
 
                     echo "<tr>";
                     echo "<td style='background: $cell_color; color: $text_color;' >".$hours["s_name"]."</td> 

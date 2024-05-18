@@ -5,7 +5,7 @@
             $contact = $_POST["contact_input"];
             $work_hours = $_POST["work_hours"];
             if($name != " " && $contact != " " && $work_hours >= 0){
-                insertData("teachers", "t_fullname, t_email", "'$name', '$contact', $work_hours");
+                insertData("teachers", "t_fullname, t_email, work_hours", "'$name', '$contact', $work_hours");
             }
         }
     }
@@ -42,7 +42,7 @@
         if(isset($_GET["edit"]))
             echo '<input name="edit_button" class="form-button" type="submit" value="Edit" />';
         else
-            echo '<input name="submit_button" class="form-button" type="submit" value="Insert" />';
+            echo '<input name="submit_button" class="btn btn-success" type="submit" value="Insert" />';
     ?>
 </form>
 

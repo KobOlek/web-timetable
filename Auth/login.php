@@ -29,7 +29,7 @@ include("config.php");
 
     </div>
     <select class="form-select" name="user_type_select" id="">
-      <option value="0">Не вибрано(Натисни нище)</option>
+      <option value="0">Не вибрано(Натисни нижче)</option>
       <option value="3">Учень</option>
       <option value="2">Вчитель</option>
       <option value="1">Admin</option>
@@ -48,7 +48,6 @@ include("config.php");
             $login = $_POST['login'];
         }
         $sql_insert = "SELECT * FROM users WHERE us_user_type = ".$_POST["user_type_select"]." AND us_email = $login AND us_password = '".md5($password)."'";
-        echo $sql_insert;
         $result = $mysqli->query($sql_insert);
         $resres = $result->fetch_row();
         if(empty($resres)!=1) {

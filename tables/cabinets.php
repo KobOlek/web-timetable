@@ -19,7 +19,6 @@
                 $room_num = $_POST["room_number"];
                 if($name != " " && $room_num != " "){
                     insertData("cabinets", "cab_name, cab_num","'".$name."', '".$room_num."'");
-                    redirectTo("admin.php?tb=".$_GET["tb"]);
                 }
             }
         }
@@ -43,9 +42,6 @@
     ?>
 </form>
 
-<?php
-    $result_array = selectData("*", "cabinets")[0];
-?>
 <div>
     <table class="table table-striped" border='1'>
         <tr>
@@ -55,6 +51,7 @@
             <th>Number</th>
         </tr>
         <?php
+            $result_array = selectData("*", "cabinets")[0];
             while($cabinetsArray = mysqli_fetch_array($result_array)){
                 echo "
                 <tr>
