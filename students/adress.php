@@ -17,7 +17,7 @@ if (isset($_GET['oth_id']))
     $sql = "SELECT oth_name FROM adress_oth where oth_id=".$_GET['oth_id'];
     $result = $conn->query($sql);
     list($oth_name)= $result->fetch_array();
-    echo "<a href='adress.php?menu=students&oth_id=".$_GET["oth_id"]."&addoth=ok'>Додати теротеріальну громаду</a><br>";
+    echo "<a href='adress.php?oth_id=".$_GET["oth_id"]."&addoth=ok'>Додати теротеріальну громаду</a><br>";
 }
 if (isset($_GET['addoth']))
  {    
@@ -73,8 +73,8 @@ $result = $conn->query($sql);
 If($result->num_rows > 0) 
 {
     while ($row = $result->fetch_assoc()){
-        echo "<a href='adress.php?menu=students&oth_id=".$row["oth_id"]."&editoth=ok'>edit</a>|";
-        echo "<a href='adress.php?menu=students&oth_id=".$row["oth_id"]."'>".$row["oth_name"]."</a><br>";   
+        echo "<a href='adress.php?oth_id=".$row["oth_id"]."&editoth=ok'>edit</a>|";
+        echo "<a href='adress.php?oth_id=".$row["oth_id"]."'>".$row["oth_name"]."</a><br>";   
     }
 } else { "Не знайдено жодного запису <br>";}
 
@@ -97,7 +97,7 @@ if (isset($_GET['oth_id']))
     $result = $conn->query($sql);
          list($oth_name)= $result->fetch_array();
             echo "Обрано - ".$oth_name."  ";
-            echo "<a href='adress.php?menu=students&oth_id=".$_GET["oth_id"]."&addtooth=ok'>Добавити населений пункт</a><br>";
+            echo "<a href='adress.php?oth_id=".$_GET["oth_id"]."&addtooth=ok'>Добавити населений пункт</a><br>";
 
             if(isset($_GET['editoth']))
     { echo "<form method='post' action=''>";
@@ -176,7 +176,7 @@ if (isset($_GET['oth_id']))
     $i=1;
         while ($row = $result->fetch_assoc()){
             echo $i;
-            echo "<a href='adress.php?menu=students&oth_id=".$_GET["oth_id"]."&edit_sity=".$row["city_id"]."'>edit</a>  ".$row['city_type']." ".$row['city_name']."<br>";
+            echo "<a href='adress.php?oth_id=".$_GET["oth_id"]."&edit_sity=".$row["city_id"]."'>edit</a>  ".$row['city_type']." ".$row['city_name']."<br>";
             $i++;
         }
     } else { "Не знайдено жодного запису";}

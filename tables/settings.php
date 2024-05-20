@@ -1,6 +1,6 @@
 <?php
     echo "<a href='?menu=admin&tb=9&user=create_student' class='btn btn-outline-success me-2'>Create student user</a>";
-    echo "<a href='?menu=admin&tb=9&user=create_teacher' class='btn btn-outline-danger me-2'>Create teacher user</a>";
+    echo "<a href='?menu=admin&tb=9&user=create_teacher' class='btn btn-outline-warning me-2'>Create teacher user</a>";
 
     if(isset($_GET["user"]))
     {

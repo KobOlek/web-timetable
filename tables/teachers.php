@@ -42,7 +42,7 @@
         if(isset($_GET["edit"]))
             echo '<input name="edit_button" class="form-button" type="submit" value="Edit" />';
         else
-            echo '<input name="submit_button" class="btn btn-success" type="submit" value="Insert" />';
+            echo '<input name="submit_button" class="btn btn-success mt-1 mb-1" type="submit" value="Insert" />';
     ?>
 </form>
 

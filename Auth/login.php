@@ -12,7 +12,7 @@ include("config.php");
     
 </head>
 <body>
-    
+<h1 class="text-center">Інормаціна панель ДНЛ імені Богдана Лепкого</h1>    
 <main class="form-signin w-100 align-self-center d-flex justify-content-center d-flex align-content-center flex-wrap">
   <form method="POST">
 
@@ -62,5 +62,12 @@ include("config.php");
         } 
       }
     ?>
+    <footer class="fixed-bottom">
+      <h6>Розроблено гуртком "Інформаційні технології"</h6>
+      <p>
+        На ЗСУ
+        <a href="https://tinyurl.com/mparj88r">https://tinyurl.com/mparj88r</a>
+      </p>
+    </footer>
 </body>
 </html>
