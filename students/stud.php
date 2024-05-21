@@ -33,7 +33,7 @@
         if (isset($_POST['up_con_stud']))        {
                         
             $sql_upd = "UPDATE contact SET co_nomer='".$_POST['text_nomer_phone']."', co_email='".$_POST['text_email']."' WHERE co_stud_id=".$_GET['stud'];
-            //echo $sql_upd;
+            echo $sql_upd;
             $result_upd = $conn->query($sql_upd);
         }
     

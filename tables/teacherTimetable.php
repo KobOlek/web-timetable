@@ -47,14 +47,14 @@
                     for($num_lesson=1; $num_lesson <= 8; $num_lesson++)
                     {
                         list($class_name, $cabinet_number) = mysqli_fetch_array(
-                            selectData("c_name, cab_num", "timetable, classes, cabinets", "WHERE tt_class_id = c_id AND tt_num_lesson = $num_lesson 
+                            selectData("cl_name, cab_num", "timetable, class, cabinets", "WHERE tt_class_id = cl_id AND tt_num_lesson = $num_lesson 
                             AND tt_day_id = $i_day AND tt_id_teach = ".$teachersArray["t_id"]." AND tt_cabinet_id = cab_id")[0]
                         );
                         if($class_name == '')
                             echo "<td style='background: grey; color: lightgrey; text-align: center;'>&#160 - &#160</td>";
                         else
                             echo "<td style='background: green; color: lime;'>
-                        <abbr style='text-decoration: none;' title='Кабінет: ".$cabinet_number."'>
+                        <abbr style='text-decoration: none; font-size: 13px;' title='Кабінет: ".$cabinet_number."'>
                         ".$class_name."</abbr></td>";
                     }
                 }
