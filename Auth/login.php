@@ -12,8 +12,8 @@ include("config.php");
     
 </head>
 <body>
-<h1 class="text-center">Інормаціна панель ДНЛ імені Богдана Лепкого</h1>    
-<main class="form-signin w-100 align-self-center d-flex justify-content-center d-flex align-content-center flex-wrap">
+<h1 class="text-center">Інормаціна система "Науковий Ліцей імені Богдана Лепкого"</h1>    
+<main class="form-signin w-100 align-self-center d-flex justify-content-center d-flex align-content-center flex-wrap ">
   <form method="POST">
 
     <h1 class="h3 mb-3 fw-normal">Увійти</h1>

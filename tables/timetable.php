@@ -215,7 +215,7 @@
         if(isset($_GET["cl"]))
         {
             list($name) = mysqli_fetch_array(
-                selectData("c_name", "classes", "WHERE c_id = ".$_GET['cl'])[0]
+                selectData("cl_name", "class", "WHERE cl_id = ".$_GET['cl'])[0]
             );
             echo "<p>".$name."</p>";
 

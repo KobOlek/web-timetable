@@ -43,14 +43,14 @@
                 <table  class="table table-striped" align="center" width="900px" border='1'>
                     <tr>
                         <?php
-                            $class_names = selectData("c_id, c_name", "classes", "WHERE c_name LIKE '%".$_GET['class']."%'")[0];
+                            $class_names = selectData("cl_id, cl_name", "class", "WHERE cl_name LIKE '%".$_GET['class']."%'")[0];
                             if(mysqli_affected_rows($GLOBALS["link"]) > 0)
                             {
                                 while($class_name = mysqli_fetch_array($class_names))
                                 {
                                     echo "
                                     <th>
-                                        <a href='?class=".$_GET["class"]."&classId=".$class_name["c_id"]."'>".$class_name["c_name"]."</a>
+                                        <a href='?class=".$_GET["class"]."&classId=".$class_name["cl_id"]."'>".$class_name["cl_name"]."</a>
                                     </th>";      
                                 }
                             }else

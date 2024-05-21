@@ -5,7 +5,7 @@
      include("config.php");
     
      require_once 'phpword/PHPWord.php';
-    $structure = $_SERVER['DOCUMENT_ROOT']."/denys/doc";
+    $structure = $_SERVER['DOCUMENT_ROOT']."/students/doc";
   
     $PHPWord = new PHPWord();
 
