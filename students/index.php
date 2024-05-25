@@ -1,8 +1,8 @@
-<?php
+﻿<?php
 include("config.php");
 
-if ($conn->connect_error) {
-    die("Помилка підключення до бази даних: ". $conn->connect_error);
+if ($mysqli->connect_error) {
+    die("Помилка підключення до бази даних: ". $mysqli->connect_error);
 }
 
 $tupe_user=1; //1-адмін    2-користувач
@@ -95,7 +95,7 @@ $tupe_user=1; //1-адмін    2-користувач
 if (isset($_GET['cl']))
 { 
     $sql = "SELECT cl_id, cl_name FROM class where cl_name like '%".$_GET['cl']."%' order by cl_bukva";
-    $result = $conn->query($sql);
+    $result = $mysqli->query($sql);
     If($result->num_rows > 0) 
     {
         echo "
@@ -131,14 +131,14 @@ if (isset($_GET['cl']))
 if (isset($_GET['st']))
 {
     $sql = "SELECT cl_name FROM class where cl_id=".$_GET['st'];
-    $result = $conn->query($sql);
+    $result = $mysqli->query($sql);
     $nameClass = '';
     while ($row = $result->fetch_assoc())
     {
       $nameClass=$row['cl_name'];
     } 
     $sql = "SELECT * FROM stud where st_cl_id=".$_GET['st']." order by st_pib";
-        $result = $conn->query($sql);       
+        $result = $mysqli->query($sql);       
         If($result->num_rows > 0) 
          {    
             echo "";            

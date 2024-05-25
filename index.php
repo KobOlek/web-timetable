@@ -14,7 +14,7 @@ list($session) = mysqli_fetch_array(
 
 if($session == null)
 {
-    redirectTo("auth/login.php");
+    redirectTo("Auth/login.php");
 }
 
 if(!isset($_SESSION['dark-theme'])) 

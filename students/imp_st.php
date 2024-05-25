@@ -2,7 +2,7 @@
     set_include_path(implode(PATH_SEPARATOR,array(realpath(__DIR__.'/Classes'), get_include_path())));
 
      ////////////////////////////////////////////////////////////////////////////////////////////////////
-     include("config.php");
+     include("./config.php");
     
      require_once 'phpword/PHPWord.php';
     $structure = $_SERVER['DOCUMENT_ROOT']."/students/doc";
