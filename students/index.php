@@ -1,34 +1,20 @@
-﻿<?php
-include("config.php");
+<?php
+if(isset($_GET["menu"]) == false){
+    session_start();
+    include("../Auth/config.php");
+    $sql_insert = "SELECT * FROM sessions WHERE ss_isActive = '".session_id()."'";
+    $result = $mysqli->query($sql_insert);
+    $resres = $result->fetch_row();
 
-if ($mysqli->connect_error) {
-    die("Помилка підключення до бази даних: ". $mysqli->connect_error);
+    if(empty($resres)){
+        session_unset();
+        session_destroy();
+        exit();
+    }
 }
-
 $tupe_user=1; //1-адмін    2-користувач
 
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link href="../css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link href="../style.css" rel="stylesheet">
-    <script src="../js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>            
-
-
-    <script src="students/js/jquery-1.4.2.js" type="text/javascript"></script>
-	<script src="students/js/jquery.jcarousel.js" type="text/javascript"></script>
-	<script src="students/js/js-func.js" type="text/javascript"></script>
-
-   <link rel="stylesheet" type="text/css" href="students/fancybox/jquery.fancybox.css" media="screen" />
-
-   <!--<script type="text/javascript" src="fancybox/jquery-1.3.2.min.js"></script>-->
-   <script type="text/javascript" src="students/fancybox/jquery.easing.1.3.js"></script>
-   <script type="text/javascript" src="students/fancybox/jquery.fancybox-1.2.1.pack.js"></script>
-</head>
 
 <script type="text/javascript">
     $(document).ready(function() 
@@ -52,46 +38,44 @@ $tupe_user=1; //1-адмін    2-користувач
     });
 </script>
 
-<body>
-    <?php
-        $a=5;
-        if(($tupe_user==1)||($tupe_user==2))
-        {
-            echo "
-            <div align=center>";
-            echo "<a class='iframe' href='students/operation.php?stat=ok'>Статистика по класах</a> || ";
-            echo "<a class='iframe' href='students/operation.php?adr=ok'>Статистика за місцем проживання</a> || " ;
-            echo "<a class='iframe' href='students/operation.php?each=ok'>Пошук учня за ПІБ</a>";
-            echo "</div>";
-        }
-
-        echo "<div>
-        <h1 align=center> Оберіть номер класу </h1>
-        <table class='table table-stripped' border=1 align=center><tr>";
-        while($a<=12)
-        {
-            echo "
-            <th width=50px height=35px>
-            <a href='?menu=students&cl=".$a."'>".$a." класи</a>
-            </th>";
-            $a++;
-        }
+<?php
+    $a=5;
+    if(($tupe_user==1)||($tupe_user==2))
+    {
         echo "
-        </tr><tr>
-        <td colspan=8>";
-          if(($tupe_user==1)&&(isset($_GET['cl'])))
-          {
-              echo "<div align=center>";
-              echo "<a class='iframe' href='operation.php?cl=".$_GET['cl']."&addclass=ok'>додати клас</a>";
-              echo "</div>";
+        <div align=center>";
+        echo "<a class='iframe' href='students/operation.php?stat=ok'>Статистика по класах</a> || ";
+        echo "<a class='iframe' href='students/operation.php?adr=ok'>Статистика за місцем проживання</a> || " ;
+        echo "<a class='iframe' href='students/operation.php?each=ok'>Пошук учня за ПІБ</a>";
+        echo "</div>";
+    }
 
-          }  
-        echo "</td>
-        </tr>
-        </table>
-        </div>";  
-    ?>
-    <?php
+    echo "<div>
+    <h1 align=center> Оберіть номер класу </h1>
+    <table class='table table-stripped' border=1 align=center><tr>";
+    while($a<=12)
+    {
+        echo "
+        <th width=50px height=35px>
+        <a href='?menu=students&cl=".$a."'>".$a." класи</a>
+        </th>";
+        $a++;
+    }
+    echo "
+    </tr><tr>
+    <td colspan=8>";
+        if(($tupe_user==1)&&(isset($_GET['cl'])))
+        {
+            echo "<div align=center>";
+            echo "<a class='iframe' href='operation.php?cl=".$_GET['cl']."&addclass=ok'>додати клас</a>";
+            echo "</div>";
+
+        }  
+    echo "</td>
+    </tr>
+    </table>
+    </div>";  
+
 if (isset($_GET['cl']))
 { 
     $sql = "SELECT cl_id, cl_name FROM class where cl_name like '%".$_GET['cl']."%' order by cl_bukva";
@@ -126,8 +110,7 @@ if (isset($_GET['cl']))
             }         
     } else { "Не знайдено жодного запису";}   
 }
-    ?>
-    <?php
+
 if (isset($_GET['st']))
 {
     $sql = "SELECT cl_name FROM class where cl_id=".$_GET['st'];
@@ -180,6 +163,4 @@ if (isset($_GET['st']))
             echo "</tr> </table></div>";   
             } else { "Не знайдено жодного запису";}      
         }
-    ?>
-</body>
-</html>
+?>

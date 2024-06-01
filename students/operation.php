@@ -3,17 +3,17 @@
 <script src="../js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>            
 
 <?php
-include("./config.php");
+include("../Auth/config.php");
 
 if (isset($_GET['delclass']))
 {
     $searchid=$_GET['st'];
     $sql = "DELETE FROM class WHERE cl_id=$searchid";
-    if ($conn->query($sql) === TRUE)
+    if ($mysqli->query($sql) === TRUE)
     {
         echo"інформація про користувача видалено успішно";
     } else {
-        echo "Помилка видалення інформації" . $conn->error;
+        echo "Помилка видалення інформації" . $mysqli->error;
     }
 }
 
@@ -21,7 +21,7 @@ if (isset($_POST['delete']))
 {    
     $sql = "DELETE FROM stud WHERE st_id=".$_GET['stud_id'];
     //echo $sql;
-    $result = $conn->query($sql);                
+    $result = $mysqli->query($sql);                
 }
 //=============================================================
 if (isset($_POST['insert_in_class']))
@@ -31,20 +31,20 @@ if (isset($_POST['insert_in_class']))
     $st_stat=$_POST['ins_stat'];
     $ins_status=$_POST['ins_status'];
     $sql = "INSERT INTO stud (st_pib, st_birsday, st_cl_id, st_stat, st_status) VALUES ('".$newName."','".$newBirthday."',".$_GET['st'].",'".$st_stat."','".$ins_status."')";     
-    if($conn->query($sql) === TRUE){
+    if($mysqli->query($sql) === TRUE){
         echo "Інформація туспішно встановлена. Останеній встановлений ID: ";
     } else {
-        echo "Помилка вставки інформації: " . $conn->error;
+        echo "Помилка вставки інформації: " . $mysqli->error;
     }
 }
 //=====================================================================
 if (isset($_POST['insert_class']))
 {   
     $sql = "INSERT INTO class (cl_name) VALUES ('".$_POST['insert_name_class']."')";
-    if($conn->query($sql) === TRUE){
+    if($mysqli->query($sql) === TRUE){
         echo "Інформація туспішно встановлена. Останеній встановлений ID: ";
     } else {
-        echo "Помилка вставки інформації: " . $conn->error;
+        echo "Помилка вставки інформації: " . $mysqli->error;
     }
 }
 //==========================================================================
@@ -52,7 +52,7 @@ if (isset($_POST['insert_class']))
  if (isset($_GET['insertinclass']))
  {
        $sql = "SELECT cl_name FROM class where cl_id=".$_GET['st'];
-       $result = $conn->query($sql);
+       $result = $mysqli->query($sql);
        $nameClass = '';
        list($nameClass) = $result->fetch_array();
 
@@ -142,7 +142,7 @@ if (isset($_POST['insert_class']))
 
         $sql = "SELECT st_pib, cl_name FROM class, stud where st_pib like '%".$_POST['text_each']."%' and st_cl_id=cl_id";
         //echo $sql;
-        $result = $conn->query($sql);
+        $result = $mysqli->query($sql);
 
         If($result->num_rows > 0)
         {
@@ -175,13 +175,13 @@ if (isset($_POST['insert_class']))
    echo "</div>";
    $sql = "SELECT distinct cl_num FROM class order by cl_num";
    //echo $sql;
-   $result = $conn->query($sql);
+   $result = $mysqli->query($sql);
        echo "<div align=center><table class='table table-stripped' border=1 width=100%>";
        echo "<tr>";       
        echo "<th>#</td>"; 
        ////////////////////
        $sql0 = "SELECT distinct cl_bukva FROM class order by cl_bukva";
-       $result0 = $conn->query($sql0);
+       $result0 = $mysqli->query($sql0);
        while($nameClass0 = $result0->fetch_array())
        {     
           echo "<th>".$nameClass0['cl_bukva']."</th>";   
@@ -195,11 +195,11 @@ if (isset($_POST['insert_class']))
             echo "<th>".$nameClass['cl_num']."</td>";  
 
             $sql10 = "SELECT distinct cl_bukva FROM class order by cl_bukva";
-            $result10 = $conn->query($sql10);
+            $result10 = $mysqli->query($sql10);
             while($nameClass10 = $result10->fetch_array())
             {  
                 $sql_c = "SELECT count(*) FROM class, stud where cl_num=".$nameClass['cl_num']." and cl_bukva='".$nameClass10[0]."' and st_cl_id=cl_id";
-                $result_c = $conn->query($sql_c);
+                $result_c = $mysqli->query($sql_c);
                 while($nameClass_c = $result_c->fetch_array())
                 {    
                    echo "<td align=center>".$nameClass_c[0]."</td>";  
@@ -207,7 +207,7 @@ if (isset($_POST['insert_class']))
             }
             //всього по класах
             $sql_total = "SELECT count(*) FROM class, stud where cl_num=".$nameClass['cl_num']." and st_cl_id=cl_id";
-            $result_total = $conn->query($sql_total);
+            $result_total = $mysqli->query($sql_total);
             while($nameClass_total = $result_total->fetch_array())
             {    
                 echo "<td align=center>".$nameClass_total[0]."</td>";  

@@ -1,5 +1,5 @@
 <?php
-    include('config.php');
+    include('Auth/config.php');
 ?>
 
 <head>

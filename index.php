@@ -1,5 +1,5 @@
 <?php
-    include ('config.php');
+    include ('Auth/config.php');
     include ("tables/functions.php");
     include("Auth/funcs/avatar.php");
 ?>
@@ -51,6 +51,16 @@ echo "<html lang='en' data-bs-theme='".$_SESSION['dark-theme']."'>";
     <link href="style.css" rel="stylesheet">
     <script src="js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>            
     
+    <script src="students/js/jquery-1.4.2.js" type="text/javascript"></script>
+	<script src="students/js/jquery.jcarousel.js" type="text/javascript"></script>
+	<script src="students/js/js-func.js" type="text/javascript"></script>
+
+   <link rel="stylesheet" type="text/css" href="students/fancybox/jquery.fancybox.css" media="screen" />
+
+   <!--<script type="text/javascript" src="fancybox/jquery-1.3.2.min.js"></script>-->
+   <script type="text/javascript" src="students/fancybox/jquery.easing.1.3.js"></script>
+   <script type="text/javascript" src="students/fancybox/jquery.fancybox-1.2.1.pack.js"></script>
+
     <title>Main</title>
 </head>
 <body>

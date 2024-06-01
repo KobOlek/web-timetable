@@ -1,5 +1,5 @@
 <?php
-include("../config.php");
+include("config.php");
 //include("timetable/tables/functions.php");
 ?>
 <!DOCTYPE html>

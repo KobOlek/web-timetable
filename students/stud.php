@@ -1,14 +1,15 @@
 ﻿<link href="../css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 <link href="../style.css" rel="stylesheet">
 <script src="../js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>            
-<?php
-        include("./config.php");
 
+
+<?php
+    include("../Auth/config.php");
         $type_user = 1; //1 = адмін
 
         $sql = "SELECT st_pib, st_id FROM stud where st_id=".$_GET['stud'];
         //echo $sql;
-        $result = $conn->query($sql);
+        $result = $mysqli->query($sql);
 
         if ($result->num_rows > 0) {
             list($tt)=$result->fetch_array();
@@ -20,21 +21,21 @@
                     
             $sql_upd = "UPDATE stud SET st_cl_id=".$_POST['class'].", st_pib='".$_POST['text_pib']."', st_birsday='".$_POST['text_dn']."', st_stat='".$_POST['st_stat']."', st_status='".$_POST['st_status']."' WHERE st_id=".$_GET['stud'];
             //echo $sql_upd;
-            $result_upd = $conn->query($sql_upd);
+            $result_upd = $mysqli->query($sql_upd);
         }
     //=============================================================================================================================================================================================================================================================================================================================================================================
         if (isset($_POST['ins_con_stud']))        {
                         
             $sql_upd = "INSERT INTO contact(co_stud_id, co_nomer, co_email)values(".$_GET['stud'].", '".$_POST['text_nomer_phone']."', '".$_POST['text_email']."')";
             //echo $sql_upd;
-            $result_upd = $conn->query($sql_upd);
+            $result_upd = $mysqli->query($sql_upd);
         }
     
         if (isset($_POST['up_con_stud']))        {
                         
             $sql_upd = "UPDATE contact SET co_nomer='".$_POST['text_nomer_phone']."', co_email='".$_POST['text_email']."' WHERE co_stud_id=".$_GET['stud'];
             echo $sql_upd;
-            $result_upd = $conn->query($sql_upd);
+            $result_upd = $mysqli->query($sql_upd);
         }
     
     //=============================================================================================================================================================================================================================================================================================================================================================================
@@ -64,7 +65,7 @@
 
             //$sql_upd = "INSERT INTO document(d_st_id, d_tup, d_seria, d_nomer, d_kym_vydano, d_kolu_vydano, d_skan, d_ipn)values(".$_GET['stud'].",".$tupdoc.",'".$_POST['text_seria']."', ".$_POST['text_nomer_dokumentu'].",  '".$_POST['text_kim_vydano']."',  '".$_POST['text_kolu_vydano']."',  '".$_POST['text_skan_dokumentu']."', '".$_POST['text_ipn']."')";
             //echo $sql_upd;
-            $result_upd = $conn->query($sql_upd);
+            $result_upd = $mysqli->query($sql_upd);
         }
     
         if (isset($_POST['up_doc_stud']))        
@@ -89,7 +90,7 @@
             }               
           
             //echo $sql_upd;
-            $result_upd = $conn->query($sql_upd);
+            $result_upd = $mysqli->query($sql_upd);
         }
     
     //=============================================================================================================================================================================================================================================================================================================================================================================
@@ -97,14 +98,14 @@
         if (isset($_POST['ins_con_father']))        {
             $sql_upd = "INSERT INTO parants(p_gender, p_st_id, p_name, p_nomer, p_email)values(1, ".$_GET['stud'].", '".$_POST['text_pib_f']."', '".$_POST['text_nomer_telofonu_f']."',  '".$_POST['text_email_f']."')";
             //echo $sql_upd;
-            $result_upd = $conn->query($sql_upd);
+            $result_upd = $mysqli->query($sql_upd);
         }
     
         if (isset($_POST['up_con_father']))        {
                         
             $sql_upd = "UPDATE parants SET p_name='".$_POST['text_pib_f']."', p_nomer='".$_POST['text_nomer_telofonu_f']."',  p_email='".$_POST['text_email_f']."' WHERE p_st_id=".$_GET['stud']." and p_gender=1";
             //echo $sql_upd;
-            $result_upd = $conn->query($sql_upd);
+            $result_upd = $mysqli->query($sql_upd);
         }
     
     //=============================================================================================================================================================================================================================================================================================================================================================================
@@ -112,28 +113,28 @@
         if (isset($_POST['ins_con_mother']))        {
             $sql_upd = "INSERT INTO parants(p_gender, p_st_id, p_name, p_nomer, p_email)values(2, ".$_GET['stud'].", '".$_POST['text_pib_m']."', '".$_POST['text_nomer_m']."',  '".$_POST['text_email_m']."')";
             //echo $sql_upd;
-            $result_upd = $conn->query($sql_upd);
+            $result_upd = $mysqli->query($sql_upd);
         }
     
         if (isset($_POST['up_con_mother']))        {
                         
             $sql_upd = "UPDATE parants SET p_name='".$_POST['text_pib_m']."', p_nomer='".$_POST['text_nomer_m']."',  p_email='".$_POST['text_email_m']."' WHERE p_st_id=".$_GET['stud']." and p_gender=2";
             //echo $sql_upd;
-            $result_upd = $conn->query($sql_upd);
+            $result_upd = $mysqli->query($sql_upd);
         }
     
     //=============================================================================================================================================================================================================================================================================================================================================================================    
     if (isset($_POST['ins_rei_stud']))        {
         $sql_upd = "INSERT INTO adress(ad_st_id, ad_cod, ad_vyl)values(".$_GET['stud'].",".$_POST['sity'].", '".$_POST['text_misce_prozhyvanya']."')";
         //echo $sql_upd;
-        $result_upd = $conn->query($sql_upd);
+        $result_upd = $mysqli->query($sql_upd);
     }
    
     if (isset($_POST['up_rei_stud']))        {
                     
         $sql_upd = "UPDATE adress SET ad_cod=".$_POST['sity'].", ad_vyl='".$_POST['text_misce_prozhyvanya']."' WHERE ad_st_id=".$_GET['stud'];
         //echo $sql_upd;
-        $result_upd = $conn->query($sql_upd);
+        $result_upd = $mysqli->query($sql_upd);
     }
       
     //=============================================================================================================================================================================================================================================================================================================================================================================    
@@ -196,7 +197,7 @@
                                 <?php                              
                                     $sql = "SELECT st_pib, st_birsday, st_stat, st_status, cl_id, cl_name, st_cl_id FROM stud, class where cl_id=st_cl_id and st_id=".$_GET['stud'];
                                     //echo $sql;
-                                    $result = $conn->query($sql);
+                                    $result = $mysqli->query($sql);
                             
                                     if ($result->num_rows > 0) {
                                         list($st_pib, $st_birsday, $st_stat, $st_status, $cl_id, $cl_name, $st_cl_id)= $result->fetch_array(); 
@@ -288,7 +289,7 @@
                                     if($type_user == 1) {
                                        $sql = "SELECT cl_id, cl_name FROM class";
                                         //echo $sql;
-                                        $result = $conn->query($sql);
+                                        $result = $mysqli->query($sql);
                                         echo "<select name='class' id='class'>";               
                                         if ($result->num_rows > 0) 
                                         {
@@ -340,7 +341,7 @@
               }
                 $sql = "SELECT co_nomer, co_email FROM contact where co_stud_id=".$_GET['stud'];
                 //echo $sql;
-                $result = $conn->query($sql);      
+                $result = $mysqli->query($sql);      
                 if ($result->num_rows > 0) {
                     list($co_nomer, $co_email)= $result->fetch_array(); 
                     //echo $st_cl_id;
@@ -408,7 +409,7 @@
 
                 $sql = "SELECT d_id, d_seria, d_nomer, d_kym_vydano, d_kolu_vydano, d_ipn FROM document where d_st_id=".$_GET['stud'].$sql_tup;
                 //echo $sql;
-                $result = $conn->query($sql);
+                $result = $mysqli->query($sql);
         
                 if ($result->num_rows > 0) {
                     list($d_id, $d_seria, $d_nomer, $d_kym_vydano, $d_kolu_vydano, $d_ipn)= $result->fetch_array(); 
@@ -645,7 +646,7 @@
                         echo "<tr><td colspan=2>";
                         $sql = "SELECT d_id, d_tup, d_seria, d_nomer, d_kym_vydano, d_kolu_vydano, d_ipn FROM document where d_st_id=".$_GET['stud']." order by d_tup";
                         //echo $sql;
-                        $result = $conn->query($sql);
+                        $result = $mysqli->query($sql);
                 
                         if ($result->num_rows > 0) 
                         {
@@ -691,7 +692,7 @@
                 <?php
                      $sql = "SELECT ad_cod, ad_vyl, ad_st_id, city_name, oth_name, city_type FROM adress, adress_city, adress_oth where oth_id=city_oth_id and ad_cod=city_id and ad_st_id=".$_GET['stud'];
                      //echo $sql;
-                     $result = $conn->query($sql);      
+                     $result = $mysqli->query($sql);      
                      if ($result->num_rows > 0) {
                          list($ad_cod, $ad_vyl, $ad_st_id, $city_name, $oth_name, $city_type)= $result->fetch_array(); 
                          }
@@ -705,7 +706,7 @@
                     if($type_user == 1) {
                         $sql = "SELECT city_id, city_name FROM adress_city order by city_type, city_name";
                         //echo $sql;
-                        $result = $conn->query($sql);
+                        $result = $mysqli->query($sql);
                         echo "<select name='sity' id='sity'>";               
                         if ($result->num_rows > 0) 
                         {
@@ -751,7 +752,7 @@
                     <?php
                         $sql = "SELECT p_name, p_nomer, p_email FROM parants where p_gender=1 and p_st_id=".$_GET['stud'];
                         //echo $sql;
-                        $result = $conn->query($sql);
+                        $result = $mysqli->query($sql);
                 
                         if ($result->num_rows > 0) {
                             list($p_namef, $p_nomerf, $p_emailf)= $result->fetch_array(); 
@@ -766,7 +767,7 @@
                         //////////////////////////////////////////////////////////////////////////////////////////////////////
                         $sql = "SELECT p_name, p_nomer, p_email FROM parants where  p_gender=2 and p_st_id=".$_GET['stud'];
                         //echo $sql;
-                        $result = $conn->query($sql);
+                        $result = $mysqli->query($sql);
                 
                         if ($result->num_rows > 0) {
                             list($p_namem, $p_nomerm, $p_emailm)= $result->fetch_array(); 

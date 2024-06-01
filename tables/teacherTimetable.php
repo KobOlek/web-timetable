@@ -1,6 +1,6 @@
 <title>Розклад вчителів</title>
 <?php
-    include("config.php");
+    include("Auth/config.php");
     $result_array = selectData("*", "teachers")[0];
 ?>
 <div>
